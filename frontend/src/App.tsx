@@ -14,21 +14,13 @@ function App() {
     const auth = useContext(AuthContext)
 
   return (
-      <div className="bg-[#424242] emin-h-scren">
-          {auth.user?(
-              <NavBar/>
-          ):(
-              <Fragment>
-              </Fragment>
-          )}
+      <div className="bg-[#424242] min-h-screen">
+            {/* <NavBar/> */}
           <div className="max-w-7xl mx-auto pt-6 ">
               <Routes>
-
-                  <Route element={<RouterGuard />}>
-                      <Route path="/" element={<Home/>}/>
-                      <Route path="/tema-1" element={<Subject1/>}/>
-                      <Route path="/test" element={<Test/>}/>
-                  </Route>
+                    <Route path="/" element={<Home/>}/>
+                    <Route path="/tema-1" element={<Subject1/>}/>
+                    <Route path="/test" element={<Test/>}/>
                   <Route path="/login" element={<Login/>}/>
                   <Route path="/register" element={<Register/>}/>
                   {/*
