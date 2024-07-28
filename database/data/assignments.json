@@ -1,0 +1,26 @@
+{
+    "allAssignments": [
+        {
+            "subject_id": "1",
+            "assignments": [
+                {
+                    "task": "Najdi riešenie: {%x%}+5=y  {%f%}",
+                    "variables": "{x,d,2,10}; {a:10{f,d,1,5}}",
+                    "solution": "mod({%f%});mod({%f%})+med({%f%})"
+                }
+
+            ]
+        },
+        {
+            "subject_id": "3",
+            "assignments": [
+                {
+                    "task": "Najdi riešenie: {%x%}+25-8=y",
+                    "variables": "{x,d,2,255}",
+                    "solution": "{%x%}+25-8"
+                }
+            ]
+        }
+
+    ]
+}
