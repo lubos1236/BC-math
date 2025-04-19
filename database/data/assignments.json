@@ -6,16 +6,26 @@
                 {
                     "task": "Najdi riešenie: {%x%}+5=y  {%f%}",
                     "variables": "{x,d,2,10}; {a:10{f,d,1,5}}",
-                    "solution": "mod({%f%});mod({%f%})+med({%f%})"
+                    "solution": "1"
                 }
 
             ]
         },
         {
-            "subject_id": "3",
+            "subject_id": "2",
             "assignments": [
                 {
                     "task": "Najdi riešenie: {%x%}+25-8=y",
+                    "variables": "{x,d,2,255}",
+                    "solution": "{%x%}+25-8"
+                }
+            ]
+        },
+        {
+            "subject_id": "2",
+            "assignments": [
+                {
+                    "task": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                     "variables": "{x,d,2,255}",
                     "solution": "{%x%}+25-8"
                 }

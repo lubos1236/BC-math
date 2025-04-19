@@ -7,22 +7,31 @@ type Variable = {
     count?: number;
 }
 
+export interface Hint {
+    id: number;
+    hint: string;
+}
+
 export interface Assignment {
+    id: number
     subject_id: number
     task: string
     variables: string
     solution: string
-    generatedValues?: { [key: string]: number | number[]};
-    generatedSolution?: string;
-    submittedSolution?: string;
+    generatedValues?: { [key: string]: number | number[] };
+    submittedSolution: string;
+    hints: Hint[];
 }
 
-function arrayProcess(variableString:string): {count: number, innerVariableString: string} {
+function arrayProcess(variableString: string): { count: number, innerVariableString: string } {
     const regex = /{([a-zA-Z]+):(\d+)\{([^{}]+)\}}/;
     const match = regex.exec(variableString);
+    if (!match) {
+        throw new Error(`Invalid array variable string: ${variableString}`);
+    }
     const count = parseInt(match[2], 10);
-    const innerVariableString = '{'+match[3]+'}';
-    return { count, innerVariableString };
+    const innerVariableString = '{' + match[3] + '}';
+    return {count, innerVariableString};
 }
 
 function generateRandomNumber(spec: Variable): number {
@@ -40,7 +49,7 @@ function generateRandomNumber(spec: Variable): number {
     return value;
 }
 
-function replaceText(text: string, values: { [key: string]: number|number[] }): string {
+function replaceText(text: string, values: { [key: string]: number | number[] }): string {
     let newText = text;
     for (const [key, value] of Object.entries(values)) {
         const placeholder = new RegExp(`{%${key}%}`, 'g');
@@ -54,11 +63,11 @@ function replaceText(text: string, values: { [key: string]: number|number[] }): 
     return newText;
 }
 
-function processOne(assignment: Assignment): Assignment{
+function processOne(assignment: Assignment): Assignment {
     const regex = /{([^,]+),(\w+)(?:\.(\d+))?,(\d+),(\d+)}/g;
     const variables: Variable[] = [];
     let match;
-    const variableStrings:string[] = assignment.variables.split(";").map(assignment => assignment.trim());
+    const variableStrings: string[] = assignment.variables.split(";").map(assignment => assignment.trim());
     variableStrings.forEach((variableString) => {
         regex.lastIndex = 0;
 
@@ -68,8 +77,8 @@ function processOne(assignment: Assignment): Assignment{
                 const count = arrayInfo.count;
                 const innerVariableString = arrayInfo.innerVariableString;
                 match = regex.exec(innerVariableString);
-                if(match){
-                    const [, name, type, precision='2', min, max, ] = match;
+                if (match) {
+                    const [, name, type, precision = '2', min, max,] = match;
                     variables.push({
                         name,
                         type,
@@ -80,11 +89,10 @@ function processOne(assignment: Assignment): Assignment{
                     });
                 }
             }
-        }
-        else {
+        } else {
             match = regex.exec(variableString);
-            if(match){
-                const [, name, type, precision='2', min, max, ] = match;
+            if (match) {
+                const [, name, type, precision = '2', min, max,] = match;
                 variables.push({
                     name,
                     type,
@@ -95,10 +103,10 @@ function processOne(assignment: Assignment): Assignment{
             }
         }
     });
-    const generatedValues: { [key: string]: number|number[] } = {};
+    const generatedValues: { [key: string]: number | number[] } = {};
     variables.forEach((variable) => {
         if (variable.count) {
-            generatedValues[variable.name] = Array.from({ length: variable.count }, () =>
+            generatedValues[variable.name] = Array.from({length: variable.count}, () =>
                 generateRandomNumber(variable)
             );
         } else
@@ -106,33 +114,35 @@ function processOne(assignment: Assignment): Assignment{
     });
 
     const solutions = assignment.solution.split(";");
-    const generatedSolutions: string[]=solutions.map(solution=>{
-        return replaceText(solution,generatedValues);
+    const generatedSolutions: string[] = solutions.map(solution => {
+        return replaceText(solution, generatedValues);
     });
     const generatedTask = replaceText(assignment.task, generatedValues);
     assignment.task = generatedTask;
 
     assignment.generatedValues = generatedValues;
-    assignment.generatedSolution = generatedSolutions.join(";");
+    //assignment.generatedSolution = generatedSolutions.join(";");
+    assignment.solution = generatedSolutions.join(";");
     return assignment;
 
 }
+
 export function processAssignments(assignments: Assignment[]): Assignment[] {
     return assignments.map(processOne);
 }
-export function checkSolution(assignment: Assignment, result: string): boolean {
-    const solutions= assignment.solution.split(";");
+
+export function checkSolution(assignment: Assignment, result: string, showResult: boolean=false): boolean | string {
+    const solutions = assignment.solution.split(";");
     let match;
     const allSolutions = [];
     for (const solution of solutions) {
-        let newSolution = replaceText(solution, assignment.generatedValues);
-        const regexMod=/mod\(([^)]+)\)/g;
+        let newSolution = replaceText(solution, assignment.generatedValues!);
+        const regexMod = /mod\(([^)]+)\)/g;
         const regexMedian = /med\(([^)]+)\)/g;
-        while ((match = regexMod.exec(newSolution)) !== null)
-        {
+        while ((match = regexMod.exec(newSolution)) !== null) {
             const numbers = match[1].split(',').map(Number);
-            const modes=computeMode(numbers);
-            newSolution = newSolution.replace(match[0],modes.toString());
+            const modes = computeMode(numbers);
+            newSolution = newSolution.replace(match[0], modes.toString());
         }
         while ((match = regexMedian.exec(newSolution)) !== null) {
             const numbers = match[1].split(",").map(Number);
@@ -142,11 +152,15 @@ export function checkSolution(assignment: Assignment, result: string): boolean {
         allSolutions.push(eval(newSolution));
     }
     const combinedSolution = allSolutions.join(';');
+    if (showResult) {
+        return combinedSolution;
+    }
     return combinedSolution === result;
 
 }
-function computeMode(numbers:number[]){
-    const frequency = {};
+
+function computeMode(numbers: number[]) {
+    const frequency:Record<number, number> = {};
     let maxFrequency = 0;
     const modes = [];
 
@@ -167,13 +181,28 @@ function computeMode(numbers:number[]){
 
     return modes;
 }
-function computeMedian(numbers:number[]){
+
+function computeMedian(numbers: number[]) {
     numbers.sort((a, b) => a - b);
     const middle = Math.floor(numbers.length / 2);
     if (numbers.length % 2 === 0) {
         return (numbers[middle - 1] + numbers[middle]) / 2;
     }
     return numbers[middle];
+}
+export function processAnswers(themes:number[],ans:boolean[],count:number):{theme:number,r_count:number,w_count:number}[]{
+    const t = themes.map((theme, index) => {
+        const start = index * count;
+        const end = start + count;
+        const answers = ans.slice(start, end);
+
+        return {
+            theme: theme,
+            r_count: answers.filter(ans => ans).length,
+            w_count: answers.filter(ans => !ans).length
+        };
+    });
+    return t;
 }
 
 

@@ -1,6 +1,7 @@
 import {Fragment, useContext, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../components/AuthProvider.tsx";
+import Block from "../components/Block.tsx";
 
 export default function Login() {
     const [email, setEmail] = useState("");
@@ -30,7 +31,7 @@ export default function Login() {
 
 
     return (
-        <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
+        <Block>
             <div className="container mx-auto">
                 <div className="mx-4 flex flex-wrap">
                     <div className="w-full px-4">
@@ -40,12 +41,13 @@ export default function Login() {
                         max-w-[525px]
                         overflow-hidden
                         rounded-lg
-                        bg-white
                         py-5
                         px-16
                         text-center
                         sm:px-12
                         md:px-[60px]
+
+                        bg-card2
                         ">
                             {error ? (
                                 <div className="flex visible">
@@ -60,7 +62,7 @@ export default function Login() {
                                 </Fragment>
                             )}
 
-                            <div className="mb-10 text-center md:mb-16">Login</div>
+                            <div className="mb-10 text-center md:mb-16">Prihlásenie</div>
 
                             <form onSubmit={handleLogin}>
                                 <div className="mb-4">
@@ -70,15 +72,15 @@ export default function Login() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         className="
+
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
                                         border
-                                        bg-[#FCFDFE]
                                         py-3
                                         px-5
                                         text-base text-body-color
-                                        placeholder-[#ACB6BE]
+                                        bg-card2
                                         outline-none
                                         focus:border-primary
                                         focus-visible:shadow-none
@@ -93,17 +95,16 @@ export default function Login() {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Password"
+                                        placeholder="Heslo"
                                         className="
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
+                                        bg-card2
                                         border
-                                        bg-[#FCFDFE]
                                         py-3
                                         px-5
                                         text-base text-body-color
-                                        placeholder-[#ACB6BE]
                                         outline-none
                                         focus:border-primary
                                         focus-visible:shadow-none
@@ -126,22 +127,22 @@ export default function Login() {
                                         text-white
                                         "
                                     >
-                                        Login
+                                        Prihlásenie
                                     </button>
                                 </div>
                             </form>
                             <Link to="/forgot-password"
                                   className="mb-2 inline-block text-base text-[#adadad] hover:text-primary hover:underline">
-                                Forgot Password?
+                                Zabidol si heslo?
                             </Link>
                             <p className="text-base text-[#adadad]">
-                                Not a member yet?
-                                <Link to="/register" className="text-primary hover:underline"> Register</Link>
+                                Niesi členom?{" "}
+                                <Link to="/register" className="text-primary hover:underline">Registrácia</Link>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </Block>
 )
 }

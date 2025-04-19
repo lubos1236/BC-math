@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState } from 'react'
+import {Role} from "../utils/Role.tsx";
 
 export interface AuthContextType {
     user: User | null
@@ -11,6 +12,7 @@ export interface User {
     id: number
     email: string
     name: string
+    role: Role
 }
 export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 

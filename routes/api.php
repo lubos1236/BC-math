@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TestController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -34,47 +36,17 @@ Route::group(['middleware' => 'api'], function () {
         // Assignments routes
         Route::post('/assignments/create', [AssignmentController::class, 'create']);
         Route::post('/assignments', [AssignmentController::class, 'getByIds']);
+        Route::get('/assignments', [AssignmentController::class, 'getAll']);
+        Route::post('/assignmentsBySubject', [AssignmentController::class, 'getByThemeIds']);
         Route::delete('/assignments/{id}', [AssignmentController::class, 'delete']);
         Route::get('/assignments/random/{n}', [AssignmentController::class, 'get']);
+        Route::put('/assignments/edit', [AssignmentController::class, 'editAssignment']);
+
+        Route::get('/test', [TestController::class,'index']);
+        Route::post('/test', [TestController::class,'store']);
+
+        Route::get('/users', [UserController::class,'getNonAdminUsers']);
+        Route::post('/users/edit', [UserController::class,'editUser']);
+        Route::delete('/users/delete', [UserController::class,'deleteUser']);
     });
 });
-/*OK
-Route::group(['middleware' => 'api'], function () {
-    Route::middleware('auth')->get('/user', function (Request $request) {
-        return $request->user();
-    });
-
-    // Auth routes
-    Route::group(['prefix' => 'auth'], function () {
-        Route::post('login', [AuthController::class, 'login']);
-        Route::post('register', [AuthController::class, 'register']);
-        Route::post('logout', [AuthController::class, 'logout']);
-        Route::post('refresh', [AuthController::class, 'refresh']);
-        Route::post('me', [AuthController::class, 'me']);
-    });
-
-    // Assignments routes
-    Route::post('/assignments/create', [AssignmentController::class, 'create']);
-    Route::post('/assignments', [AssignmentController::class, 'getByIds']);
-    Route::delete('/assignments/{id}', [AssignmentController::class, 'delete']);
-    Route::get('/assignments/random/{n}', [AssignmentController::class, 'get']);
-});
-*/
-/*OLD
-Route::middleware('auth')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::group(['middleware' => 'api', 'prefix' => 'auth'], function ($router) {
-    Route::post('login', [AuthController::class, 'login']);
-    Route::post('register', [AuthController::class, 'register']);
-    Route::post('logout', [AuthController::class,'logout']);
-    Route::post('refresh', [AuthController::class,'refresh']);
-    Route::post('me', [AuthController::class,'me']);
-});
-
-Route::group(['middleware' => 'auth'], function ($router) {
-    Route::post('assignments', [AssignmentController::class, 'create']);
-    Route::get('assignments/{n}', [AssignmentController::class, 'get']);
-    Route::get('assignments/{id}', [AssignmentController::class, 'getById']);
-});*/

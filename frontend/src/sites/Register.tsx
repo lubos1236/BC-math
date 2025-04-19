@@ -1,6 +1,7 @@
 import {Fragment, useContext, useState} from "react";
 import {Link, useNavigate} from "react-router-dom";
 import {AuthContext} from "../components/AuthProvider.tsx";
+import Block from "../components/Block.tsx";
 
 export default function Register() {
     const [name, setName] = useState("tt");
@@ -36,7 +37,7 @@ export default function Register() {
 
 
     return (
-        <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
+        <Block>
             <div className="container mx-auto">
                 <div className="mx-4 flex flex-wrap">
                     <div className="w-full px-4">
@@ -46,7 +47,7 @@ export default function Register() {
                         max-w-[525px]
                         overflow-hidden
                         rounded-lg
-                        bg-white
+                        bg-card2
                         py-5
                         px-16
                         text-center
@@ -66,7 +67,7 @@ export default function Register() {
                                 </Fragment>
                             )}
 
-                            <div className="mb-10 text-center md:mb-16">Register</div>
+                            <div className="mb-10 text-center md:mb-16">Registrácia</div>
 
                             <form onSubmit={handleRegister}>
                                 <div className="mb-4">
@@ -74,13 +75,14 @@ export default function Register() {
                                         type="text"
                                         value={name}
                                         onChange={(e) => setName(e.target.value)}
-                                        placeholder="Name"
+                                        placeholder="Meno"
+                                        autoComplete={"off"}
                                         className="
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
                                         border
-                                        bg-[#FCFDFE]
+                                        bg-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -101,12 +103,13 @@ export default function Register() {
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
+                                        autoComplete={"off"}
                                         className="
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
                                         border
-                                        bg-[#FCFDFE]
+                                        bg-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -125,13 +128,14 @@ export default function Register() {
                                         type="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Password"
+                                        placeholder="Heslo"
+                                        autoComplete={"off"}
                                         className="
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
                                         border
-                                        bg-[#FCFDFE]
+                                        bg-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -150,13 +154,14 @@ export default function Register() {
                                         type="password"
                                         value={password_confirmation}
                                         onChange={(e) => setPassword_confirmation(e.target.value)}
-                                        placeholder="Password Confirmation"
+                                        placeholder="Potvrdenie hesla"
+                                        autoComplete={"off"}
                                         className="
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
                                         border
-                                        bg-[#FCFDFE]
+                                        bg-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -189,13 +194,13 @@ export default function Register() {
                             </form>
 
                             <p className="text-base text-[#adadad]">
-                                Already a member?
-                                <Link to="/login" className="text-primary hover:underline"> Login</Link>
+                                Už si členom?{' '}
+                                <Link to="/login" className="text-primary hover:underline">Príhlás sa</Link>
                             </p>
                         </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </Block>
     )
 }

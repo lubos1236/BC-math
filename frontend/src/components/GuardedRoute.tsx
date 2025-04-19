@@ -2,6 +2,7 @@
 import { Navigate, Outlet, To } from 'react-router-dom'
 import { useContext } from 'react'
 import {AuthContext} from "./AuthProvider.tsx";
+import {Role} from "../utils/Role.tsx";
 
 interface GuardedRouteProps {
     guest?: boolean;
@@ -10,6 +11,7 @@ interface GuardedRouteProps {
      * @default '/'
      */
     redirectRoute?: To;
+    role?: Role[];
 }
 
 /**
@@ -30,11 +32,12 @@ interface GuardedRouteProps {
  * />
  * ```
  */
-function GuardedRoute({ guest, redirectRoute}: GuardedRouteProps) {
+function GuardedRoute({ guest, redirectRoute,role}: GuardedRouteProps) {
     const auth = useContext(AuthContext)
 
     const isAuthenticated = guest ? !auth.user : !!auth.user
-    const isAccessible = isAuthenticated
+    const hasRole=role? role.includes(auth.user?.role as Role):true
+    const isAccessible = isAuthenticated && hasRole
 
     return isAccessible ? <Outlet /> : <Navigate to={redirectRoute || '/login'} replace />
 }

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Assignment extends Model
+class Test extends Model
 {
     use HasFactory;
     public $timestamps = false;
@@ -17,13 +17,11 @@ class Assignment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'subject_id',
-        'task',
-        'variables',
-        'solution',
+        'user_id',
+        'success_rate',
     ];
-    public function hints()
+    public function themes()
     {
-        return $this->belongsToMany(Hint::class,'assignment_hint');
+        return $this->hasMany(TestTheme::class);
     }
 }

@@ -17,6 +17,12 @@ class AssignmentController extends Controller
     {
         $this->middleware('auth:api');
     }
+    public function getAll()
+    {
+        //$this->authorize("viewAny", Assignment::class);
+        $assignments = Assignment::with('hints')->get();
+        return response()->json($assignments);
+    }
 
     public function create()
     {
@@ -34,17 +40,31 @@ class AssignmentController extends Controller
     {
         $assignment = Assignment::findOrFail($id);
 
-        $this->authorize('delete', $assignment);
+        //$this->authorize('delete', $assignment);
 
         $assignment->delete();
 
         return response()->json(null, 204);
     }
+    public function editAssignment(Request $request)
+    {
+        //$this->authorize("update", Assignment::class);
+        $request->validate([
+            'id' => 'required|integer',
+            'subject_id' => 'required|integer',
+            'task' => 'required|string',
+            'variables' => 'required|string',
+            'solution' => 'required|string',
+        ]);
+        $assignment = Assignment::findOrFail($request->input('id'));
+        $assignment->update($request->all());
+        return response()->json(['message' => 'Assignment updated successfully']);
+    }
 
     public function get($n)
     {
         $this->authorize("viewAny", Assignment::class);
-        $assignments = Assignment::inRandomOrder()->limit($n)->get();
+        $assignments = Assignment::with('hints')->inRandomOrder()->limit($n)->get();
         return response()->json($assignments);
     }
     public function getByIds(Request $request)
@@ -53,9 +73,23 @@ class AssignmentController extends Controller
             'ids' => 'required|array',
             'ids.*' => 'integer',
         ]);
-        $assignments=Assignment::whereIn('id',$request->input('ids'))->get();
+        $assignments=Assignment::with('hints')->whereIn('id',$request->input('ids'))->get();
         $this->authorize('viewAny', Assignment::class);
-        //return response()->json(auth()->user());
+        return response()->json($assignments);
+    }
+    public function getByThemeIds(Request $request)
+    {
+        $request->validate([
+            'subject' => 'required|array',
+            'count' => 'required|integer',
+        ]);
+        $s=$request->input('subject');
+        $c=$request->input('count');
+        $assignments = collect($s)->flatMap(function ($s) use ($c) {
+            return Assignment::with('hints')->
+            where('subject_id', $s)->inRandomOrder()->limit($c)->get();
+        });
+        $this->authorize('viewAny', Assignment::class);
         return response()->json($assignments);
     }
 }

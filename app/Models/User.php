@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Role;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -41,6 +43,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $casts = [
         'password' => 'hashed',
+        'role'=>Role::class,
     ];
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
@@ -60,5 +63,9 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+    public function history()
+    {
+        return $this->hasMany(History::class);
     }
 }

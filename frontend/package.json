@@ -10,8 +10,14 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "react": "^18.2.0",
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@mui/material": "^6.2.0",
+    "@mui/x-charts": "^7.23.1",
+    "npm-install-missing": "^0.1.4",
+    "react": "^18.3.1",
     "react-dom": "^18.2.0",
+    "react-latex-next": "^3.0.0",
     "react-router-dom": "^6.19.0",
     "universal-cookie": "^6.1.1"
   },

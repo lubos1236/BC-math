@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Assignment;
+use App\Models\Hint;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -12,11 +14,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-         //\App\Models\User::factory(10)->create();
-
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
+            'role' => 'Admin',
+        ]);
+        \App\Models\User::factory(32)->create();
+
+        $hints=Hint::insert([
+            ['hint'=>'Nápoveda 1'],
+            ['hint'=>'Nápoveda 2'],
+            ['hint'=>'Nápoveda 3'],
+            ['hint'=>'Nápoveda 4'],
+            ['hint'=>'Nápoveda 5'],
         ]);
 
         $json = file_get_contents(base_path('database/data/assignments.json'));
@@ -33,5 +43,8 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
+        Assignment::find(1)->hints()->attach([1]);
+        Assignment::find(2)->hints()->attach([2,3,4,5]);
+
     }
 }
