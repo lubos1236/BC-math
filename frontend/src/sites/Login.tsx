@@ -17,6 +17,7 @@ export default function Login() {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(data),
+            credentials: "include",
         }).catch(()=>{setError("Database conection error")});
 
         const json = await response?.json();
@@ -25,8 +26,10 @@ export default function Login() {
         else{
             auth.setToken(json.access_token)
             auth.setUser(json.user)
+            console.log(document.cookie);
             navigate("/");
         }
+
     };
 
 

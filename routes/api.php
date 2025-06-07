@@ -4,6 +4,7 @@ use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ThemeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,8 @@ Route::group(['middleware' => 'api'], function () {
 
         Route::get('/test', [TestController::class,'index']);
         Route::post('/test', [TestController::class,'store']);
+
+        Route::get('/theme', [ThemeController::class,'getAll']);
 
         Route::get('/users', [UserController::class,'getNonAdminUsers']);
         Route::post('/users/edit', [UserController::class,'editUser']);

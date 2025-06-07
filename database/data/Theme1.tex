@@ -1,0 +1,73 @@
+\textbf{Téma 1: Úvod do Matematickej štatistiky}
+
+Matematická štatistika je odbor matematiky zaoberajúci sa zberom, analýzou a interpretáciou dát. Jej hlavným cieľom je odhadovať vlastnosti populácie na základe informácií obsiahnutých vo vzorke. Popisná štatistika sa zameriava na zhrnutie dát pomocou mier centrálnej tendencie a variability. Teória pravdepodobnosti je základom matematickej štatistiky a umožňuje kvantifikovať neistotu v rôznych javoch. Inferenčná štatistika poskytuje metódy na odvodzovanie záverov o celej populácii na základe dát získaných z jej vzorky. Regresná analýza skúma vzťahy medzi premennými a umožňuje predikciu hodnôt na základe znalostí iných premenných. Bayesovská štatistika využíva Bayesovu vetu na aktualizáciu pravdepodobností na základe nových dôkazov. Matematická štatistika má široké uplatnenie v rôznych oblastiach, vrátane vedeckého výskumu, ekonómie a zdravotníctva. Je mocným nástrojom pre interpretáciu dát a rozhodovacie procesy. Pomáha vytvárať informované rozhodnutia a porozumieť javom vo svete okolo nás.
+
+\textbf{Príklad: Hádzanie mincí}
+
+Predstavme si, že chceme zistiť pravdepodobnosť toho, že pri jednom hode mincí padne hlava. Etapy štatistickej práce:
+
+\begin{enumerate}
+    \item \textbf{Zber dát}: Vykonáme sériu hodov mincí. Napríklad 100 hodu mincí.
+    \item \textbf{Spracovanie dát}: Po vykonaní 100 hodov mincí zistíme, že v 60 prípadoch padla hlava.
+    \item \textbf{Analýza dát}: Teraz môžeme vypočítať pravdepodobnosť toho, že padne hlava. Stačí vydeliť počet prípadov, keď padla hlava (60), celkovým počtom hodov (100). Teda pravdepodobnosť hlavy je:
+    \[
+        P(\text{hlava}) = \frac{60}{100} = 0.6 \quad \text{(60\%)}
+    \]
+    \item \textbf{Záver}: Na základe nášho experimentu sme zistili, že pravdepodobnosť, že pri hode mincí padne hlava, je približne 60\%. Toto je odhad pravdepodobnosti získaný z našej vzorky.
+\end{enumerate}
+
+\textbf{Príklad: Oslava a pravdepodobnosť mien}
+
+Na oslave je 100 hostí, z ktorých 10 má meno Martin a 15 z nich majú meno, ktoré začína na písmeno F. Každý z nich má práve jedno meno.
+
+\begin{itemize}
+    \item a1) Aká je pravdepodobnosť, že sa bude volať Martin?
+    \item a2) Aká je pravdepodobnosť, že meno hosťa bude Martin, alebo sa bude začínať na písmeno F?
+    \item a3) Aká je pravdepodobnosť, že meno hosťa nebude Martin, ale bude začínať na písmeno F?
+    \item a4) Aká je pravdepodobnosť, že meno hosťa nebude Martin a nebude sa začínať na písmeno F?
+    \[
+        1 - 0.25 = 0.75
+    \]
+\end{itemize}
+
+\textbf{Hádzanie kockou}
+
+Strany kocky sú označené 1 až 6.
+
+\begin{itemize}
+    \item Aká je pravdepodobnosť, že spadne číslo 3? \[
+                                                         \frac{1}{6}
+    \]
+    \item Aká je pravdepodobnosť, že spadne číslo väčšie ako 4? \[
+                                                                    \frac{2}{6} = \frac{1}{3}
+    \]
+    \item Aká je pravdepodobnosť, že spadne číslo menšie ako 5? \[
+                                                                    \frac{4}{6} = \frac{2}{3}
+    \]
+\end{itemize}
+
+\textbf{Medián}
+
+Medián označujeme \textit{med(x)}. Je to prostredný člen spomedzi hodnôt \( x_i \), ak sú usporiadané podľa veľkosti. Ak je rozsahom súboru párne číslo \( n \), medián určíme nasledovne:
+\[
+    \text{med}(x) = \frac{x_i + x_{i+1}}{2}, \quad i = \frac{n}{2}
+\]
+Tento výpočet predstavuje aritmetický priemer „prostredných“ dvoch členov.
+
+\textbf{Modus}
+
+Modus označujeme \textit{mod(x)}. Je to najčastejšie sa vyskytujúca hodnota v súbore.
+
+\textbf{Príklad: Známky žiakov 6. A}
+
+Žiaci 6. A dostali z písomnej práce z matematiky nasledovné známky:
+\[
+    3, 2, 1, 1, 2, 2, 3, 4, 4, 1, 2, 3, 3, 3, 5
+\]
+
+\textbf{Medián}:
+\[
+    \text{med} = \frac{(3 + 2 + 1 + 1 + 2 + 2 + 3 + 4 + 4 + 1 + 2 + 3 + 3 + 3 + 5)}{2} = 2.6
+\]
+
+\textbf{Modus}: 3 (najčastejšie vyskytujúca sa hodnota)

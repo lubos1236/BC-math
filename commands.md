@@ -9,3 +9,6 @@
 - php artisan migrate:fresh
 - php artisan migrate:fresh --seed
 - php artisan make:controller AuthController
+
+## API Documentation link
+http://localhost:8000/api/documentation

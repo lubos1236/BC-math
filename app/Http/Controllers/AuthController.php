@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login','register']]);
+        $this->middleware('auth:api', ['except' => ['login','register', 'refresh']]);
     }
 
     /**
@@ -52,19 +53,6 @@ class AuthController extends Controller
         $user=User::create($validated);
         $token = auth()->login($user);
         return $this->respondWithToken($token);
-        /*
-        $validation=request()->validate([
-            'name' => 'required|string|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-        ]);
-
-        $validation['password'] = Hash::make($validation['password']);
-
-        $user=User::create($validation);
-        $token = auth()->login($user);
-
-        return $this->respondWithToken($token);*/
     }
 
     /**
@@ -84,19 +72,43 @@ class AuthController extends Controller
      */
     public function logout()
     {
+        $user = auth()->user();
+        if ($user) {
+            $user->refresh_token = null;
+            $user->save();
+        }
+
         auth()->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        // Zmažeme refresh_token cookie nastavením vypršania do minulosti
+        return response()->json(['message' => 'Successfully logged out'])
+            ->withCookie(cookie('refresh_token', '', -1, '/', null, false, true, false, 'Strict'));
     }
+
 
     /**
      * Refresh a token.
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function refresh()
+    public function refresh(Request $request)
     {
-        return $this->respondWithToken(auth()->refresh());
+        $cookie = $request->cookie('refresh_token');
+        if (!$cookie) {
+            return response()->json(['error' => 'No refresh token'], 401);
+        }
+
+        $hashed = hash('sha256', $cookie);
+        $user = User::where('refresh_token', $hashed)->first();
+
+        if (! $user) {
+            return response()->json(['error' => 'Invalid refresh token'], 401);
+        }
+
+        // Prihlás používateľa a vytvor nový token
+        $token = auth()->login($user);
+
+        return $this->respondWithToken($token);
     }
 
     /**
@@ -108,11 +120,16 @@ class AuthController extends Controller
      */
     protected function respondWithToken($token)
     {
+        $user = auth()->user();
+        $refreshToken = Str::random(64);
+        $user->refresh_token = hash('sha256', $refreshToken);
+        $user->save();
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires' => auth()->factory()->getTTL(),
-            'user' => auth()->user()
-        ]);
+            'user' => $user
+        ])->cookie('refresh_token', $refreshToken, 60*24*7,'/',null,false,true,false,'Strict');//7 dni
     }
 }

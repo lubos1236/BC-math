@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use OpenApi\Annotations as OA;
 
 class AssignmentController extends Controller
 {
@@ -17,6 +18,34 @@ class AssignmentController extends Controller
     {
         $this->middleware('auth:api');
     }
+    /**
+     * @OA\Info(
+     *     title="Moja API Dokumentácia",
+     *     version="1.0.0",
+     *     description="Popis mojej REST API"
+     * )
+     *
+     * @OA\Server(
+     *     url=L5_SWAGGER_CONST_HOST,
+     *     description="Hlavný server"
+     * )
+     *
+     * @OA\SecurityScheme(
+     *     securityScheme="bearerAuth",
+     *     type="http",
+     *     scheme="bearer"
+     * )
+     * @OA\Get(
+     *     path="/api/users",
+     *     tags={"Users"},
+     *     summary="Zoznam používateľov",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Úspešné načítanie používateľov"
+     *     )
+     * )
+     */
     public function getAll()
     {
         //$this->authorize("viewAny", Assignment::class);

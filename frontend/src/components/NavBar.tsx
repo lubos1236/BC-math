@@ -10,8 +10,28 @@ export default function NavBar() {
 
     const handleLogOut = async (e: { preventDefault: () => void; }) => {
         e.preventDefault;
-        auth.setToken(null)
-        auth.setUser(null)
+        fetch('http://localhost:8000/api/auth/logout', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: `Bearer ${auth.token}`,
+            },
+            credentials: 'include',
+        })
+            .then(res => {
+                if (!res.ok) throw new Error('Logout failed');
+                return res.json();
+            })
+            .then(data => {
+                console.log(data.message); // Successfully logged out
+                auth.setToken(null);
+                auth.setUser(null);
+                navigate('/login'); // presmerovanie na login
+            })
+            .catch(err => {
+                console.error('Logout error:', err);
+            });
+
     }
     const handleLink = () => {
         navigate("/me");

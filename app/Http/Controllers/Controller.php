@@ -1,4 +1,16 @@
 <?php
+/**
+ * @OA\Info(
+ *     title="API Dokumentácia",
+ *     version="1.0"
+ * )
+
+ * @OA\SecurityScheme(
+ *     securityScheme="bearerAuth",
+ *     type="http",
+ *     scheme="bearer"
+ * )
+ */
 
 namespace App\Http\Controllers;
 

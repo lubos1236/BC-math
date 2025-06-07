@@ -8,6 +8,7 @@ import Me from "./sites/Me.tsx";
 import AdminPanel from "./sites/AdminPanel.tsx";
 import Assignments from "./sites/Assignments.tsx";
 import GuardedRoute from "./components/GuardedRoute.tsx";
+import GuestOnlyRoute from "./components/GuestOnlyRoute.tsx";
 import {Fragment, useContext} from "react";
 import {AuthContext} from "./components/AuthProvider.tsx";
 import Subject from "./sites/Subject.tsx";
@@ -38,7 +39,6 @@ function App() {
                       <Route path="/result" element={<Result/>}/>
                       <Route path="/test" element={<Test/>}/>
                       <Route path="/me" element={<Me/>}/>
-
                   </Route>
                   <Route element={<GuardedRoute role={[Role.Admin]} />}>
                       <Route path="/users" element={<AdminPanel/>}/>
@@ -46,9 +46,11 @@ function App() {
                     <Route element={<GuardedRoute role={[Role.Admin, Role.Manager]} />}>
                         <Route path="/assignments" element={<Assignments/>}/>
                     </Route>
-
-                  <Route path="/login" element={<Login/>}/>
-                  <Route path="/register" element={<Register/>}/>
+                  <Route element={<GuestOnlyRoute/>}>
+                    <Route path="/login" element={<Login/>}/>
+                    <Route path="/register" element={<Register/>}/>
+                  </Route>
+                    <Route path="*" element={<h1>404 Not Found</h1>}/>
               </Routes>
           </div>
       </div>
