@@ -15,7 +15,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $l1 = file_get_contents(base_path('database/data/Theme1.tex'));
+        $md1 = file_get_contents(base_path('database/data/Theme1.md'));
+        $md2 = file_get_contents(base_path('database/data/Theme2.md'));
+        $md3 = file_get_contents(base_path('database/data/Theme3.md'));
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -24,10 +26,13 @@ class DatabaseSeeder extends Seeder
         \App\Models\User::factory(32)->create();
         $theme1 = Theme::create([
             'title' => 'Úvod do Matematickej štatistiky',
-            'text' => $l1,]);
+            'text' => $md1,]);
         $theme2 = Theme::create([
             'title' => 'Náhodná premenná',
-            'text' => '$$218=\frac{a}{b}$$',]);
+            'text' => $md2,]);
+        $theme3 = Theme::create([
+            'title' => 'Bodové a intervalové odhady',
+            'text' => $md3,]);
 
         /*\App\Models\Theme::factory()->create(
             [

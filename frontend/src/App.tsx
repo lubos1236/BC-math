@@ -14,12 +14,13 @@ import {AuthContext} from "./components/AuthProvider.tsx";
 import Subject from "./sites/Subject.tsx";
 import Result from "./sites/Result.tsx";
 import {Role} from "./utils/Role.tsx";
+import Themes from "./sites/Themes.tsx";
 
 function App() {
     const auth = useContext(AuthContext)
 
   return (
-      <div className="bg-background text-white min-h-screen font-sans m-0 p-5 ">
+      <div className="bg-light-background dark:bg-dark-background text-light-text dark:text-dark-text min-h-screen font-sans m-0 p-5 ">
           {auth.user?(
               <NavBar/>
           ):(
@@ -45,6 +46,7 @@ function App() {
                   </Route>
                     <Route element={<GuardedRoute role={[Role.Admin, Role.Manager]} />}>
                         <Route path="/assignments" element={<Assignments/>}/>
+                        <Route path="/themes" element={<Themes/>}/>
                     </Route>
                   <Route element={<GuestOnlyRoute/>}>
                     <Route path="/login" element={<Login/>}/>

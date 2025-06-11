@@ -4,20 +4,30 @@
             "subject_id": "1",
             "assignments": [
                 {
-                    "task": "Najdi riešenie: {%x%}+5=y  {%f%}",
-                    "variables": "{x,d,2,10}; {a:10{f,d,1,5}}",
-                    "solution": "1"
+                    "task": "**Údaje:** {%f%}\n\n**Úloha:** Vypočítaj median a modus.\n\nriesenie oddel ; ",
+                    "variables": "{a:10{f,d,1,5}}",
+                    "solution": "med({%f%});mod({%f%})"
                 }
 
             ]
         },
         {
-            "subject_id": "2",
+            "subject_id": "1",
             "assignments": [
                 {
-                    "task": "Najdi riešenie: {%x%}+25-8=y",
-                    "variables": "{x,d,2,255}",
-                    "solution": "{%x%}+25-8"
+                    "task": "## Hod kockou:\n\nAká je pravdepodobnosť, že pri hode {%x%}-strannou kockou padne číslo rovné alebo menšie ako {%y%}",
+                    "variables": "{x,d,6,16};{y,d,1,6}",
+                    "solution": "{%y%}/{%x%}"
+                }
+            ]
+        },
+        {
+            "subject_id": "1",
+            "assignments": [
+                {
+                    "task": "## Hod kockou:\n\nAká je pravdepodobnosť, že pri hode {%x%}-strannou kockou padne číslo {%y%}",
+                    "variables": "{x,d,6,16};{y,d,1,6}",
+                    "solution": "1/{%x%}"
                 }
             ]
         },
@@ -25,12 +35,33 @@
             "subject_id": "2",
             "assignments": [
                 {
-                    "task": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-                    "variables": "{x,d,2,255}",
-                    "solution": "{%x%}+25-8"
+                    "task": "Náhodná premenná **X** predstavuje číslo, ktoré padne pri jednom hode kockou. Údaje: {%x%} \n\n**Úloha:** Vypočítaj  Rozptyl (σ²).",
+                    "variables": "{a:6{x,d,1,6}}",
+                    "solution": "var({%x%})"
+                }
+            ]
+        },
+        {
+            "subject_id": "2",
+            "assignments": [
+                {
+                    "task": "Náhodná premenná **X** predstavuje číslo, ktoré padne pri jednom hode kockou. Údaje: {%x%} \n\n**Úloha:** Vypočítaj  Rozptyl (σ²).",
+                    "variables": "{a:6{x,d,1,6}}",
+                    "solution": "var({%x%})"
+                }
+            ]
+        },
+        {
+            "subject_id": "2",
+            "assignments": [
+                {
+                    "task": "Náhodná premenná **X** predstavuje číslo, ktoré padne pri jednom hode kockou. Údaje: 2, 6, 3, 4, 1, 5 \n\n**Úloha:** Vypočítaj  Rozptyl (σ²).",
+                    "variables": "",
+                    "solution": "var(2, 6, 3, 4, 1, 5)"
                 }
             ]
         }
+
 
     ]
 }

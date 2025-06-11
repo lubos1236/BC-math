@@ -47,6 +47,9 @@ Route::group(['middleware' => 'api'], function () {
         Route::post('/test', [TestController::class,'store']);
 
         Route::get('/theme', [ThemeController::class,'getAll']);
+        Route::post('/theme/create', [ThemeController::class,'store']);
+        Route::delete('/theme/{id}', [ThemeController::class,'delete']);
+        Route::put('/theme/edit', [ThemeController::class,'editTheme']);
 
         Route::get('/users', [UserController::class,'getNonAdminUsers']);
         Route::post('/users/edit', [UserController::class,'editUser']);

@@ -49,8 +49,8 @@ export default function Login() {
                         text-center
                         sm:px-12
                         md:px-[60px]
-
-                        bg-card2
+                        bg-light-card2
+                        dark:bg-dark-card2
                         ">
                             {error ? (
                                 <div className="flex visible">
@@ -75,7 +75,6 @@ export default function Login() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         className="
-
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
@@ -83,7 +82,8 @@ export default function Login() {
                                         py-3
                                         px-5
                                         text-base text-body-color
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         outline-none
                                         focus:border-primary
                                         focus-visible:shadow-none
@@ -103,7 +103,8 @@ export default function Login() {
                                         border-[#E9EDF4]
                                         w-full
                                         rounded-md
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         border
                                         py-3
                                         px-5
@@ -127,18 +128,19 @@ export default function Login() {
                                         bg-indigo-500
                                         hover:bg-indigo-700
                                         rounded-md
-                                        text-white
+                                        text-light-text
+                                        dark:text-dark-text
                                         "
                                     >
                                         Prihlásenie
                                     </button>
                                 </div>
                             </form>
-                            <Link to="/forgot-password"
-                                  className="mb-2 inline-block text-base text-[#adadad] hover:text-primary hover:underline">
-                                Zabidol si heslo?
-                            </Link>
-                            <p className="text-base text-[#adadad]">
+                            {/*<Link to="/forgot-password"*/}
+                            {/*      className="mb-2 inline-block text-base text-[#adadad] hover:text-primary hover:underline">*/}
+                            {/*    Zabidol si heslo?*/}
+                            {/*</Link>*/}
+                            <p className="text-base text-light-text dark:text-dark-text">
                                 Niesi členom?{" "}
                                 <Link to="/register" className="text-primary hover:underline">Registrácia</Link>
                             </p>

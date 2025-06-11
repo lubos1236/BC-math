@@ -2,6 +2,7 @@ import {Link,useNavigate} from "react-router-dom";
 import {Fragment, useContext} from "react";
 import {AuthContext} from "./AuthProvider.tsx";
 import {Role} from "../utils/Role.tsx";
+import DarkModeToggle from "./DarkModeToggle.tsx";
 
 
 export default function NavBar() {
@@ -38,10 +39,10 @@ export default function NavBar() {
     }
 
     return(
-        <nav className="rounded bg-card text-white px-2 mb-4 sm:px-4">
+        <nav className="rounded bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text px-2 mb-4 sm:px-4">
             <div className="container mx-auto flex flex-wrap items-center justify-between">
                 <Link to="/"
-                      className="block rounded py-2 pr-4 pl-3 text-white"
+                      className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                       aria-current="page">Domov
                 </Link>
                 <div className="hidden w-full md:block md:w-auto">
@@ -51,29 +52,40 @@ export default function NavBar() {
                                 {[Role.Admin].includes(auth.user?.role as Role) && (
                                     <li>
                                         <Link to="/users"
-                                              className="block rounded py-2 pr-4 pl-3 text-white"
+                                              className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                                               aria-current="page">Uživatelia
                                         </Link>
                                     </li>
                                 )}
                                 {[Role.Admin,Role.Manager].includes(auth.user?.role as Role) && (
-                                    <li>
-                                        <Link to="/assignments"
-                                              className="block rounded py-2 pr-4 pl-3 text-white"
-                                              aria-current="page">Zadania
-                                        </Link>
-                                    </li>
+                                    <Fragment>
+                                        <li>
+                                            <Link to="/assignments"
+                                                  className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
+                                                  aria-current="page">Zadania
+                                            </Link>
+                                        </li>
+                                        <li>
+                                            <Link to="/themes"
+                                                  className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
+                                                  aria-current="page">Témy
+                                            </Link>
+                                        </li>
+                                    </Fragment>
                                 )}
 
                                 <li>
-                                    <button type={"button"} onClick={handleLink} className="block rounded py-2 pr-4 pl-3 text-white"
+                                    <button type={"button"} onClick={handleLink} className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                                          aria-current="page">Vitaj {auth.user.name}
                                     </button>
                                 </li>
                                 <li>
-                                    <button type={"button"} onClick={handleLogOut} className="block rounded py-2 pr-4 pl-3 text-white"
+                                    <button type={"button"} onClick={handleLogOut} className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                                          aria-current="page">Odhlásiť sa
                                     </button>
+                                </li>
+                                <li>
+                                    <DarkModeToggle/>
                                 </li>
                             </Fragment>
 
@@ -81,13 +93,13 @@ export default function NavBar() {
                             <Fragment>
                                 <li>
                                     <Link to="/login"
-                                          className="block rounded py-2 pr-4 pl-3 text-white"
+                                          className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                                           aria-current="page">Login
                                     </Link>
                                 </li>
                                 <li>
                                     <Link to="/register"
-                                          className="block rounded py-2 pr-4 pl-3 text-white"
+                                          className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
                                           aria-current="page">Register
                                     </Link>
                                 </li>

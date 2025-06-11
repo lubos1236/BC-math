@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->float('success_rate');
+            $table->timestamp("created_at")->nullable()->useCurrent();
         });
     }
 

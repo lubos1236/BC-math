@@ -53,9 +53,11 @@ class AssignmentController extends Controller
         return response()->json($assignments);
     }
 
-    public function create()
+    public function create(Request $request)
     {
-        $this->authorize("create", User::class);
+        //return reqquest
+        //return $request->all();
+        //$this->authorize("create", User::class);
         $request->validate([
             'subject_id' => 'required|integer',
             'task' => 'required|string',

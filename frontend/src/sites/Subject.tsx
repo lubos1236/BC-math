@@ -1,6 +1,6 @@
 import {useNavigate, useLocation} from 'react-router-dom';
 import Block from "../components/Block.tsx";
-import Latex from "react-latex-next";
+import LatexComponent from "../components/LatexComponent";
 import {useEffect, useState} from "react";
 import {Theme} from "./Home.tsx";
 export default function Subject() {
@@ -12,30 +12,6 @@ export default function Subject() {
     const data:Theme = location.state.data;
 
     useEffect(() => {
-        /*let path='';
-        switch (Number(location.pathname.substring(6))) {
-            case 1:
-                path='/latex/subject1.tex';
-                setIds([1]);
-                setSubject(1);
-                break;
-            case 2:
-                path='/latex/subject2.tex';
-                setIds([2]);
-                setSubject(2);
-                break;
-            case 3:
-                path='/latex/subject3.tex';
-                setIds([1,2]);
-                setSubject(3);
-                break;
-            case 4:
-                path='/latex/subject4.tex';
-                setIds([1]);
-                setSubject(4);
-                break;
-        }*/
-        //fetch(path).then(response=>response.text()).then(data=>setLatexCode(data))
         setLatexCode(data.text);
     }, []);
 
@@ -53,22 +29,19 @@ export default function Subject() {
                         <div className="
                         relative
                         mx-auto
-                        max-w-[525px]
                         overflow-hidden
                         rounded-lg
-                        bg-card2
+                        bg-light-background
+                        dark:bg-dark-background
                         py-5
                         px-16
-                        text-center
                         sm:px-12
                         md:px-[60px]
                         ">
-                            {/*<Latex>{latexCode}</Latex>*/}
-                            <Latex>{'\textbf{Hello World}'}</Latex>
-                            <div className="mb-10 text-center md:mb-16">Téma {Number(location.pathname.substring(6))}</div>
+                            <LatexComponent markDown={latexCode}/>
                             <button onClick={navigateToTest}
-                            className="bg-background font-bold py-2 px-4 rounded"
-                            >Start Test
+                            className="bg-light-card2 dark:bg-dark-card2 font-bold py-2 px-4 rounded block mx-auto text-xl"
+                            >Spustiť Test
                             </button>
                         </div>
                     </div>

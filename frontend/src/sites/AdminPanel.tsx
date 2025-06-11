@@ -83,9 +83,9 @@ export default function AdminPanel() {
                     data={data}
                     columns={[
                         {header: 'ID', accessor: 'id'},
-                        {header: 'Name', accessor: 'name'},
+                        {header: 'Meno', accessor: 'name'},
                         {header: 'Email', accessor: 'email'},
-                        {header: 'Role', accessor: 'role'},
+                        {header: 'Rola', accessor: 'role'},
                     ]}
                     onEdit={handleEdit}
                     onDelete={handleDelete}
@@ -93,14 +93,14 @@ export default function AdminPanel() {
             </div>
 
             {editingUser && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-background p-6 rounded shadow-lg w-96 space-y-4">
+                <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
+                    <div className="bg-light-background dark:bg-dark-background p-6 rounded shadow-lg w-96 space-y-4">
                         <h2 className="text-xl font-bold">Edit User</h2>
 
                         <div>
                             <label className="block mb-1">Name:</label>
                             <input
-                                className="w-full border p-2 rounded bg-background"
+                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.name}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, name: e.target.value })
@@ -111,7 +111,7 @@ export default function AdminPanel() {
                         <div>
                             <label className="block mb-1">Email:</label>
                             <input
-                                className="w-full border p-2 rounded bg-background"
+                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.email}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, email: e.target.value })
@@ -122,7 +122,7 @@ export default function AdminPanel() {
                         <div>
                             <label className="block mb-1">Role:</label>
                             <select
-                                className="w-full border p-2 rounded bg-background"
+                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.role}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, role: e.target.value as Role })
@@ -135,13 +135,13 @@ export default function AdminPanel() {
 
                         <div className="flex justify-end gap-2">
                             <button
-                                className="px-4 py-2 bg-card rounded "
+                                className="px-4 py-2 bg-light-card dark:bg-dark-card rounded "
                                 onClick={() => setEditingUser(null)}
                             >
                                 Cancel
                             </button>
                             <button
-                                className="px-4 py-2 bg-blue-500 text-white rounded"
+                                className="px-4 py-2 bg-blue-500 text-light-text dark:text-dark-text rounded"
                                 onClick={handleSave}
                             >
                                 Save

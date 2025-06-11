@@ -15,7 +15,7 @@ class TestController extends Controller
         try {
             // Validate request
             $validatedData = $request->validate([
-                'success_rate' => 'required|integer',
+                'success_rate' => 'required|numeric',
                 'themes' => 'required|array',
                 'themes.*.theme' => 'required|integer',
                 'themes.*.r_count' => 'required|integer|min:0',
@@ -58,10 +58,23 @@ class TestController extends Controller
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
-            $tests = Test::where('user_id', $user->id)->with('themes')->get();
+            $tests = Test::where('user_id', $user->id)
+                ->with('themes.themeDetails') // načíta aj názvy tém
+                ->get();
+
+            // Pridaj názvy tém k výsledkom
+            $tests->each(function ($test) {
+                $test->themes->each(function ($theme) {
+                    $theme->theme_title = $theme->themeDetails->title ?? 'Neznáma téma';
+                    unset($theme->themeDetails); // odstráň nepotrebné
+                });
+            });
+
             return response()->json($tests, 200);
+
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
     }
+
 }

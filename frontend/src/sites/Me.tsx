@@ -1,9 +1,10 @@
 import Block from "../components/Block.tsx";
-import {PieChart} from "@mui/x-charts";
 import {useContext, useEffect, useState} from "react";
 import {AuthContext} from "../components/AuthProvider.tsx";
+import PaginatedTable from "../components/PaginatedTable.tsx";
 
 export type ThemeStats = {
+    theme_title?: string;
     id: number;
     theme: number;
     test_id: number;
@@ -15,15 +16,13 @@ export type UserTestStats = {
     id: number;
     user_id: number;
     success_rate: number;
+    created_at: string;
     themes: ThemeStats[];
 };
 
 export default function Me() {
     const [data, setData] = useState<UserTestStats[]>([]);
     const auth = useContext(AuthContext);
-    const tmpData = [
-        {id: 'Correct', value: 80, color: 'green'},
-        {id: 'Incorrect', value: 20, color: 'red'},];
 
     useEffect(() => {
         const fetchAssignments = async () => {
@@ -55,6 +54,12 @@ export default function Me() {
         const total = data.reduce((sum, stat) => sum + stat.success_rate, 0);
         return total / data.length;
     };
+    const formattedTableData = [...data].reverse().map((test, index) => ({
+        id: index + 1,
+        created_at: new Date(test.created_at).toLocaleString(),
+        success_rate: `${test.success_rate.toFixed(2)}%`,
+        themes: test.themes.map(t => t.theme_title ?? `Téma #${t.theme}`).join(', '),
+    }));
 
 
 
@@ -66,40 +71,45 @@ export default function Me() {
 
     return (
         <Block>
-            <div className="flex flex-col md:flex-row gap-6">
-                {/* Ľavá strana – miesto pre koláčový graf */}
-                <div className="w-full md:w-1/2 bg-card2 rounded-lg p-6 shadow">
-                    <h2 className="text-xl font-semibold mb-4 text-center">Tvoje výsledky podľa tém</h2>
-                    {/* Tu neskôr vložíš koláčový graf */}
-                    <div className="relative w-[400px] h-[400px]">
-                        <PieChart series={[{
-                            data: tmpData,
-                            innerRadius: 125,
-                            color: 'data.color',
-                        }]}/>
-                        <div
-                            className="absolute top-1/2 left-[40%] -translate-x-1/2
-                     -translate-y-1/2 text-lg font-bold
-                     text-center">
-                            <div className="text-8xl">
-                                {80}%
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-
-                {/* Pravá strana – štatistiky */}
-                <div className="w-full md:w-1/2 bg-card2 rounded-lg p-6 shadow">
+                <div className="w-full  bg-light-card dark:bg-dark-card2 rounded-lg p-6 shadow">
                     <h2 className="text-xl font-semibold mb-4 text-center">Tvoje štatistiky</h2>
                     <ul className="space-y-4 text-lg">
-                        <li><strong>Počet testov:</strong> {/* sem dáš dynamickú hodnotu */} {data.length}</li>
-                        <li><strong>Priemerný výsledok:</strong> {/* sem dáš dynamickú hodnotu */} {getAverageSuccessRate(data)}%</li>
-                        <li><strong>Najsilnejšia téma:</strong> {/* sem dáš dynamickú hodnotu */} -</li>
-                        <li><strong>Najslabšia téma:</strong> {/* sem dáš dynamickú hodnotu */} -</li>
+                        <li><strong>Počet ukončených testov:</strong> {data.length}</li>
+                        <li><strong>Priemerný dosiahnutý výsledok:</strong> {getAverageSuccessRate(data).toFixed(2)}%</li>
+                    </ul>
+                    <br/>
+                    <hr></hr>
+                    <br/>
+                    <h2 className="text-xl font-semibold mb-4 text-center">Posledný test</h2>
+                    <ul className="space-y-4 text-lg">
+                        <li><strong>Dátum:</strong> {data.length > 0 ? data[data.length - 1].created_at : 'N/A'}</li>
+                        <li><strong>Počet správnych odpovedí:</strong> {data.length > 0 ? data[data.length - 1].themes.reduce((acc, theme) => acc + theme.r_count, 0) : 0}</li>
+                        <li><strong>Počet nesprávnych odpovedí:</strong> {data.length > 0 ? data[data.length - 1].themes.reduce((acc, theme) => acc + theme.w_count, 0) : 0}</li>
+                        <li><strong>Dosiahnutý výsledok:</strong> {data.length > 0 ? data[data.length - 1].success_rate.toFixed(2) : 0}%</li>
+                        <li><strong>Písané z tém:</strong></li> {data.length > 0 ? data[data.length - 1].themes.map((theme) => (
+                        <li key={theme.id} className="p-3 rounded-lg bg-light-background dark:bg-dark-background shadow-sm">
+                        <div className="font-semibold text-primary">
+                            {theme.theme_title ?? `Téma #${theme.theme}`}
+                        </div>
+                        <div className="text-sm text-muted-foreground ml-2">
+                            ✅ Správne: <span className="text-green-600 font-medium">{theme.r_count}</span>,
+                            ❌ Nesprávne: <span className="text-red-600 font-medium">{theme.w_count}</span>
+                        </div>
+                    </li>
+                    )) : <li>Žiadne témy</li>}
                     </ul>
                 </div>
-            </div>
+            <hr /><br/>
+            <h2 className="text-xl font-semibold text-center">História testov</h2>
+            <PaginatedTable
+                data={formattedTableData}
+                columns={[
+                    { header: 'Test #', accessor: 'id' },
+                    { header: 'Dátum', accessor: 'created_at' },
+                    { header: 'Úspešnosť', accessor: 'success_rate' },
+                    { header: 'Témy', accessor: 'themes' },
+                ]}
+            />
         </Block>
     );
 }

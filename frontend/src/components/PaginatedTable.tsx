@@ -26,43 +26,38 @@ export function PaginatedTable<T extends { id: number }>({
     const currentRows = data.slice(indexOfFirstRow, indexOfLastRow);
     const totalPages = Math.ceil(data.length / rowsPerPage);
 
-    function truncate(text: string, maxLength = 40): string {
-        if (text.length <= maxLength) return text;
-        return text.slice(0, maxLength - 3) + '...';
-    }
-
 
     return (
         <div className="p-4">
             <table className="w-full border">
                 <thead>
-                <tr className="bg-background">
+                <tr className="bg-light-background dark:bg-dark-background">
                     {columns.map((col) => (
                         <th key={String(col.accessor)} className="p-2 border">{col.header}</th>
                     ))}
-                    {(onEdit || onDelete) && <th className="p-2 border">Actions</th>}
+                    {(onEdit || onDelete) && <th className="p-2 border">Akcie</th>}
                 </tr>
                 </thead>
                 <tbody>
                 {currentRows.map((row) => (
                     <tr key={row.id}>
                         {columns.map((col) => (
-                            <td key={String(col.accessor)} className="p-2 border">
-                                {typeof row[col.accessor] === 'string'
-                                    ? truncate(row[col.accessor] as string)
-                                    : String(row[col.accessor])}
+                            <td key={String(col.accessor)} className="p-2 border max-w-[200px] overflow-hidden text-ellipsis whitespace-nowrap">
+                                <span title={String(row[col.accessor])}>
+                                    {String(row[col.accessor])}
+                                </span>
                             </td>
                         ))}
                         {(onEdit || onDelete) && (
                             <td className="p-2 border">
                                 {onEdit && (
                                     <button onClick={() => onEdit(row)} className="text-blue-500 hover:underline mr-2">
-                                        Edit
+                                        Editovať
                                     </button>
                                 )}
                                 {onDelete && (
                                     <button onClick={() => onDelete(row)} className="text-red-500 hover:underline">
-                                        Delete
+                                        Zmazať
                                     </button>
                                 )}
                             </td>
@@ -79,7 +74,7 @@ export function PaginatedTable<T extends { id: number }>({
                     disabled={currentPage === 1}
                     className="px-2 py-1 border rounded disabled:opacity-50"
                 >
-                    Prev
+                    Predchádzajúca
                 </button>
                 <span>
                     Page {currentPage} / {totalPages}
@@ -89,7 +84,7 @@ export function PaginatedTable<T extends { id: number }>({
                     disabled={currentPage === totalPages}
                     className="px-2 py-1 border rounded disabled:opacity-50"
                 >
-                    Next
+                    Ďalšia
                 </button>
             </div>
         </div>

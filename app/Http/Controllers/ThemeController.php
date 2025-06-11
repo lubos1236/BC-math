@@ -8,15 +8,13 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
 class ThemeController extends Controller
 {
     public function getAll()
     {
-        //het themes with assignments ids
+        // Get themes with assignment ids
         $themes = Theme::with('assignments:id')->get()->map(function ($theme) {
             return [
                 'id' => $theme->id,
@@ -25,43 +23,53 @@ class ThemeController extends Controller
                 'assignment_ids' => $theme->assignments->pluck('id'),
             ];
         });
+
         return response()->json($themes);
     }
-/*
-    public function create()
+
+    public function store(Request $request)
     {
-        $this->authorize("create", User::class);
-        $request->validate([
-            'subject_id' => 'required|integer',
-            'task' => 'required|string',
-            'variables' => 'required|string',
-            'solution' => 'required|string',
+        $validated = $request->validate([
+            'title' => 'required|string',
+            'text' => 'required|string',
         ]);
-        $assignment = Assignment::create($request->all());
-        return response()->json($assignment, 201);
+
+        $theme = Theme::create($validated);
+
+        return response()->json(['message' => 'Theme created successfully', 'theme' => $theme]);
     }
+
     public function delete($id)
     {
-        $assignment = Assignment::findOrFail($id);
+        $theme = Theme::findOrFail($id);
 
-        //$this->authorize('delete', $assignment);
 
-        $assignment->delete();
+        $theme->delete();
 
-        return response()->json(null, 204);
+        return response()->json(['message' => 'Theme deleted successfully']);
     }
-    public function editAssignment(Request $request)
+
+
+    // New edit method for Theme
+    public function editTheme(Request $request)
     {
-        //$this->authorize("update", Assignment::class);
-        $request->validate([
+        // Validate the request
+        $validated = $request->validate([
             'id' => 'required|integer',
-            'subject_id' => 'required|integer',
-            'task' => 'required|string',
-            'variables' => 'required|string',
-            'solution' => 'required|string',
+            'title' => 'required|string',
+            'text' => 'required|string',
         ]);
-        $assignment = Assignment::findOrFail($request->input('id'));
-        $assignment->update($request->all());
-        return response()->json(['message' => 'Assignment updated successfully']);
-    }*/
+
+        // Find the theme using the validated ID
+        $theme = Theme::findOrFail($validated['id']); // Používame ID z validated dát
+
+        // Update the theme
+        $theme->update([
+            'title' => $validated['title'],
+            'text' => $validated['text'],
+        ]);
+
+        return response()->json(['message' => 'Theme updated successfully']);
+    }
+
 }

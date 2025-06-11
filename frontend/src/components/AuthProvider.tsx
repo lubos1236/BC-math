@@ -21,9 +21,9 @@ export const AuthContext = createContext<AuthContextType>({} as AuthContextType)
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<User | null>(null);
     const [token, setToken] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(true); // pridaj isLoading
     const navigate = useNavigate();
     const location = useLocation();
-
 
     useEffect(() => {
         const noRefreshSites = ['/login', '/register'];
@@ -38,8 +38,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     credentials: 'include'
                 });
 
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
+                if (res.status === 401) {
+                    setToken(null);
+                    setUser(null);
+                    setIsLoading(false);
+                    return;
                 }
 
                 const data = await res.json();
@@ -48,10 +51,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     setToken(data.access_token);
                     setUser(data.user);
 
-                    // Premiestni používateľa ak je na login/register
+                    // Ak je na login/register a je prihlásený, presmeruj na home
                     if (noRefreshSites.includes(location.pathname)) {
                         navigate('/');
                     }
+                } else {
+                    setToken(null);
+                    setUser(null);
                 }
             } catch (error) {
                 setToken(null);
@@ -60,12 +66,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 if (!noRefreshSites.includes(location.pathname)) {
                     navigate('/login');
                 }
+            } finally {
+                setIsLoading(false);
             }
         };
 
         tryRefresh();
-    }, []);
-
+    }, [location.pathname, navigate]);
 
     const value = {
         setUser,
@@ -73,6 +80,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         token,
         setToken,
     };
+
+    // Počas načítania nerenderuj nič (alebo loading spinner)
+    if (isLoading) {
+        return (
+            <div className="flex items-center justify-center min-h-screen bg-light-background dark:bg-dark-background">
+                <div className="w-12 h-12 border-4 border-t-transparent border-primary rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     return (
         <AuthContext.Provider value={value}>

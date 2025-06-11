@@ -26,4 +26,8 @@ class TestTheme extends Model
     {
         return $this->belongsToMany(Assignment::class,'assignment_hint');
     }
+    public function themeDetails()
+    {
+        return $this->belongsTo(Theme::class, 'theme');
+    }
 }

@@ -47,7 +47,8 @@ export default function Register() {
                         max-w-[525px]
                         overflow-hidden
                         rounded-lg
-                        bg-card2
+                        bg-light-card2
+                        dark:bg-dark-card2
                         py-5
                         px-16
                         text-center
@@ -82,7 +83,8 @@ export default function Register() {
                                         w-full
                                         rounded-md
                                         border
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -109,7 +111,8 @@ export default function Register() {
                                         w-full
                                         rounded-md
                                         border
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -135,7 +138,8 @@ export default function Register() {
                                         w-full
                                         rounded-md
                                         border
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -161,7 +165,8 @@ export default function Register() {
                                         w-full
                                         rounded-md
                                         border
-                                        bg-card2
+                                        bg-light-card2
+                                        dark:bg-dark-card2
                                         py-3
                                         px-5
                                         text-base text-body-color
@@ -185,7 +190,8 @@ export default function Register() {
                                         bg-indigo-500
                                         hover:bg-indigo-700
                                         rounded-md
-                                        text-white
+                                        text-light-text
+                                        dark:text-dark-text
                                         "
                                     >
                                         Register
@@ -193,7 +199,7 @@ export default function Register() {
                                 </div>
                             </form>
 
-                            <p className="text-base text-[#adadad]">
+                            <p className="text-base text-light-text dark:text-dark-text">
                                 Už si členom?{' '}
                                 <Link to="/login" className="text-primary hover:underline">Príhlás sa</Link>
                             </p>
