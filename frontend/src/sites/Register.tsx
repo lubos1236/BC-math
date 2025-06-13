@@ -79,7 +79,7 @@ export default function Register() {
                                         placeholder="Meno"
                                         autoComplete={"off"}
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         border
@@ -107,7 +107,7 @@ export default function Register() {
                                         placeholder="Email"
                                         autoComplete={"off"}
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         border
@@ -134,7 +134,7 @@ export default function Register() {
                                         placeholder="Heslo"
                                         autoComplete={"off"}
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         border
@@ -161,7 +161,7 @@ export default function Register() {
                                         placeholder="Potvrdenie hesla"
                                         autoComplete={"off"}
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         border

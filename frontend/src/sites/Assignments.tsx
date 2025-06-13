@@ -1,16 +1,19 @@
 import Block from "../components/Block.tsx";
-import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../components/AuthProvider.tsx";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../components/AuthProvider.tsx";
 import PaginatedTable from "../components/PaginatedTable.tsx";
-import {Assignment, processAssignments} from "../utils/assignmentUtils.ts";
-import LatexComponent from "../components/LatexComponent.tsx";
+import { Assignment, processAssignments } from "../utils/assignmentUtils.ts";
+import MarkdownComponent from "../components/MarkdownComponent.tsx";
+import HintModal from "../components/HintModal.tsx";
 
 export default function Assignments() {
     const [data, setData] = useState<Assignment[]>([]);
     const [editItem, setEditItem] = useState<Assignment | null>(null);
-    const [generatedTask, setGeneratedTask] = useState<string>('');
+    const [generatedTask, setGeneratedTask] = useState<string>('');  // Pre generovaný text úlohy
     const [showModal, setShowModal] = useState(false);
+    const [showHelpModal, setShowHelpModal] = useState(false);
     const auth = useContext(AuthContext);
+    const [selectedHints, setSelectedHints] = useState<number[]>([]);
 
     useEffect(() => {
         fetchData();
@@ -32,10 +35,33 @@ export default function Assignments() {
     };
 
     const handleEdit = (item: Assignment) => {
-        setEditItem(structuredClone(item));
-        const processed = processAssignments([structuredClone(item)]);
-        setGeneratedTask(processed[0].task);
+        const cloned = structuredClone(item);
+        setEditItem(cloned);  // Uložíme pôvodný text úlohy pred generovaním
+
+        // Predpokladám, že `cloned.hints` je pole Hint[] a chceme len ids
+        if (cloned.hints) {
+            setSelectedHints(cloned.hints.map(hint => hint.id));
+        } else {
+            setSelectedHints([]); // Pre istotu ak hinty nie sú
+        }
+
         setShowModal(true);
+        setGeneratedTask(''); // Reset generovaného textu pri úprave
+    };
+
+    useEffect(() => {
+        if (showModal && editItem && generatedTask === '') {
+            // Generovanie úlohy len pri otvorení modalu a keď ešte neexistuje vygenerovaný text
+            handleGenerate();
+        }
+    }, [showModal, editItem]);
+
+    const handleGenerate = () => {
+        if (!editItem) return;
+
+        // Generujeme nový náhľad na úlohu podľa `editItem.task`
+        const processed = processAssignments([structuredClone(editItem)]);
+        setGeneratedTask(processed[0].task);  // Nastavíme generovaný text
     };
 
     const handleNew = () => {
@@ -51,14 +77,14 @@ export default function Assignments() {
         setShowModal(true);
     };
 
-    const handleGenerate = () => {
-        if (!editItem) return;
-        const processed = processAssignments([structuredClone(editItem)]);
-        setGeneratedTask(processed[0].task);
-    };
-
     const handleSave = async () => {
         if (!editItem) return;
+
+        // Pridaj hinty do `editItem`
+        const payload = {
+            ...editItem,
+            hint_ids: selectedHints, // Predpokladám, že server očakáva pole id hintov
+        };
 
         const method = editItem.id === 0 ? 'POST' : 'PUT';
         const url = editItem.id === 0
@@ -72,7 +98,7 @@ export default function Assignments() {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${auth.token}`,
                 },
-                body: JSON.stringify(editItem),
+                body: JSON.stringify(payload),
             });
 
             if (response.ok) {
@@ -80,6 +106,7 @@ export default function Assignments() {
                 setShowModal(false);
                 setEditItem(null);
                 setGeneratedTask('');
+                setSelectedHints([]);  // Reset selected hints after save
             } else {
                 console.error('Failed to save assignment');
             }
@@ -111,24 +138,33 @@ export default function Assignments() {
             <div className="p-4">
                 <div className="flex justify-between items-center mb-4">
                     <h1 className="text-2xl">Úlohy</h1>
-                    <button
-                        onClick={handleNew}
-                        className="bg-blue-600 text-light-text dark:text-dark-text px-4 py-2 rounded hover:bg-blue-700"
-                    >
-                        +
-                    </button>
+                    <div className="flex items-center gap-2">
+                        <button
+                            onClick={handleNew}
+                            className="bg-blue-600 text-light-text dark:text-dark-text px-4 py-2 rounded hover:bg-blue-700"
+                        >
+                            +
+                        </button>
+                        <a
+                            href="/navod"
+                            className="inline-block px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                        >
+                            Návod
+                        </a>
+                    </div>
                 </div>
-
-                <PaginatedTable
-                    data={data}
-                    columns={[
-                        {header: 'ID', accessor: 'id'},
-                        {header: 'Id témy', accessor: 'subject_id'},
-                        {header: 'Úloha', accessor: 'task'},
-                    ]}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+                <div className="overflow-x-auto w-full">
+                    <PaginatedTable
+                        data={data}
+                        columns={[
+                            { header: 'ID', accessor: 'id' },
+                            { header: 'Id témy', accessor: 'subject_id' },
+                            { header: 'Úloha', accessor: 'task' },
+                        ]}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </div>
             </div>
 
             {showModal && editItem && (
@@ -142,7 +178,7 @@ export default function Assignments() {
                                 <input
                                     type="number"
                                     value={editItem.subject_id}
-                                    onChange={(e) => setEditItem({...editItem, subject_id: parseInt(e.target.value)})}
+                                    onChange={(e) => setEditItem({ ...editItem, subject_id: parseInt(e.target.value) })}
                                     className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
                                 />
                             </div>
@@ -153,15 +189,15 @@ export default function Assignments() {
                                 <label className="block font-semibold mb-1">Úloha:</label>
                                 <textarea
                                     value={editItem.task}
-                                    onChange={(e) => setEditItem({...editItem, task: e.target.value})}
+                                    onChange={(e) => setEditItem({ ...editItem, task: e.target.value })}  // Umožníme úpravy
                                     className="w-full h-64 p-2 border rounded resize-none bg-light-background dark:bg-dark-background"
                                 />
                             </div>
 
                             <div className="w-1/2">
                                 <label className="block font-semibold mb-1">Náhľad:</label>
-                                <div className="w-full h-64 p-2 border rounded overflow-auto bg-light-card dark:caret-dark-card whitespace-pre-wrap">
-                                    <LatexComponent markDown={generatedTask}/>
+                                <div className="w-full h-64 p-2 border rounded overflow-auto whitespace-pre-wrap">
+                                    <MarkdownComponent markDown={generatedTask} />
                                 </div>
                             </div>
                         </div>
@@ -170,7 +206,7 @@ export default function Assignments() {
                             <label className="block font-semibold mb-1">Premenné:</label>
                             <textarea
                                 value={editItem.variables}
-                                onChange={(e) => setEditItem({...editItem, variables: e.target.value})}
+                                onChange={(e) => setEditItem({ ...editItem, variables: e.target.value })}
                                 className="w-full h-32 p-2 border rounded resize-none font-mono text-sm bg-light-background dark:bg-dark-background"
                             />
                         </div>
@@ -179,7 +215,7 @@ export default function Assignments() {
                             <label className="block font-semibold mb-1">Výpočet:</label>
                             <textarea
                                 value={editItem.solution}
-                                onChange={(e) => setEditItem({...editItem, solution: e.target.value})}
+                                onChange={(e) => setEditItem({ ...editItem, solution: e.target.value })}
                                 className="w-full h-40 p-2 border rounded resize-none font-mono text-sm bg-light-background dark:bg-dark-background"
                             />
                         </div>
@@ -187,9 +223,15 @@ export default function Assignments() {
                         <div className="flex justify-end space-x-2">
                             <button
                                 onClick={handleGenerate}
-                                className="px-4 py-2 bg-green-400 rounded"
+                                className="px-4 py-2 bg-green-800 rounded"
                             >
                                 Generovať
+                            </button>
+                            <button
+                                onClick={() => setShowHelpModal(true)}
+                                className="px-4 py-2 border rounded"
+                            >
+                                Nápoveda
                             </button>
                             <button
                                 onClick={() => {
@@ -197,7 +239,7 @@ export default function Assignments() {
                                     setEditItem(null);
                                     setGeneratedTask('');
                                 }}
-                                className="px-4 py-2 bg-gray-300 rounded"
+                                className="px-4 py-2 border rounded"
                             >
                                 Zrušiť
                             </button>
@@ -212,6 +254,14 @@ export default function Assignments() {
                 </div>
             )}
 
+            {showHelpModal && (
+                <HintModal
+                    isOpen={showHelpModal}
+                    onClose={() => setShowHelpModal(false)}
+                    selectedHintIds={selectedHints}
+                    onSave={(ids) => setSelectedHints(ids)}
+                />
+            )}
         </Block>
     );
 }

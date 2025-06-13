@@ -1,107 +1,111 @@
-import {Link,useNavigate} from "react-router-dom";
-import {Fragment, useContext} from "react";
-import {AuthContext} from "./AuthProvider.tsx";
-import {Role} from "../utils/Role.tsx";
+import { Link, useNavigate } from "react-router-dom";
+import { Fragment, useContext, useState } from "react";
+import { AuthContext } from "./AuthProvider.tsx";
+import { Role } from "../utils/Role.tsx";
 import DarkModeToggle from "./DarkModeToggle.tsx";
 
-
 export default function NavBar() {
-    const auth = useContext(AuthContext)
-    const navigate=useNavigate();
+    const auth = useContext(AuthContext);
+    const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleLogOut = async (e: { preventDefault: () => void; }) => {
-        e.preventDefault;
-        fetch('http://localhost:8000/api/auth/logout', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${auth.token}`,
-            },
-            credentials: 'include',
-        })
-            .then(res => {
-                if (!res.ok) throw new Error('Logout failed');
-                return res.json();
-            })
-            .then(data => {
-                console.log(data.message); // Successfully logged out
-                auth.setToken(null);
-                auth.setUser(null);
-                navigate('/login'); // presmerovanie na login
-            })
-            .catch(err => {
-                console.error('Logout error:', err);
+    const handleLogOut = async (e: React.MouseEvent) => {
+        e.preventDefault();
+        try {
+            const res = await fetch('http://localhost:8000/api/auth/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                },
+                credentials: 'include',
             });
 
-    }
+            if (!res.ok) throw new Error('Logout failed');
+
+            const data = await res.json();
+            console.log(data.message);
+            auth.setToken(null);
+            auth.setUser(null);
+            navigate('/login');
+        } catch (err) {
+            console.error('Logout error:', err);
+        }
+    };
+
     const handleLink = () => {
         navigate("/me");
-    }
+    };
 
-    return(
-        <nav className="rounded bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text px-2 mb-4 sm:px-4">
-            <div className="container mx-auto flex flex-wrap items-center justify-between">
-                <Link to="/"
-                      className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                      aria-current="page">Domov
+    return (
+        <nav className="rounded bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text px-2 sm:px-4 mb-4">
+            <div className="container mx-auto flex flex-wrap items-center justify-between py-3">
+                <Link to="/" className="text-lg font-semibold">
+                    Domov
                 </Link>
-                <div className="hidden w-full md:block md:w-auto">
-                    <ul className="mt-4 flex flex-col rounded-lg p-4 md:mt-0 md:flex-row md:space-x-8 md:text-sm md:font-medium">
-                        {auth.user?(
+
+                {/* Tlačidlo pre zobrazenie menu na mobiloch */}
+                <button
+                    className="md:hidden text-2xl"
+                    onClick={() => setIsOpen(!isOpen)}
+                    aria-label="Toggle menu"
+                >
+                    {isOpen ? "×" : "☰"}
+                </button>
+
+                <div className={`${isOpen ? 'block' : 'hidden'} w-full md:block md:w-auto`}>
+                    <ul className="flex flex-col md:flex-row md:space-x-6 mt-4 md:mt-0">
+                        {auth.user ? (
                             <Fragment>
                                 {[Role.Admin].includes(auth.user?.role as Role) && (
                                     <li>
-                                        <Link to="/users"
-                                              className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                              aria-current="page">Uživatelia
+                                        <Link to="/users" className="block py-2">
+                                            Uživatelia
                                         </Link>
                                     </li>
                                 )}
-                                {[Role.Admin,Role.Manager].includes(auth.user?.role as Role) && (
+                                {[Role.Admin, Role.Manager].includes(auth.user?.role as Role) && (
                                     <Fragment>
                                         <li>
-                                            <Link to="/assignments"
-                                                  className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                                  aria-current="page">Zadania
+                                            <Link to="/assignments" className="block py-2">
+                                                Úlohy
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link to="/themes"
-                                                  className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                                  aria-current="page">Témy
+                                            <Link to="/themes" className="block py-2">
+                                                Témy
                                             </Link>
                                         </li>
                                     </Fragment>
                                 )}
-
                                 <li>
-                                    <button type={"button"} onClick={handleLink} className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                         aria-current="page">Vitaj {auth.user.name}
+                                    <button onClick={handleLink} className="block py-2 text-left w-full">
+                                        Vitaj {auth.user.name}
                                     </button>
                                 </li>
                                 <li>
-                                    <button type={"button"} onClick={handleLogOut} className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                         aria-current="page">Odhlásiť sa
+                                    <button onClick={handleLogOut} className="block py-2 text-left w-full">
+                                        Odhlásiť sa
                                     </button>
                                 </li>
                                 <li>
-                                    <DarkModeToggle/>
+                                    <DarkModeToggle />
                                 </li>
                             </Fragment>
-
                         ) : (
                             <Fragment>
                                 <li>
-                                    <Link to="/login"
-                                          className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                          aria-current="page">Login
+                                    <Link to="/login" className="block py-2">
+                                        Login
                                     </Link>
                                 </li>
                                 <li>
-                                    <Link to="/register"
-                                          className="block rounded py-2 pr-4 pl-3 text-light-text dark:text-dark-text"
-                                          aria-current="page">Register
+                                    <Link to="/register" className="block py-2">
+                                        Register
                                     </Link>
+                                </li>
+                                <li>
+                                    <DarkModeToggle />
                                 </li>
                             </Fragment>
                         )}
@@ -109,5 +113,5 @@ export default function NavBar() {
                 </div>
             </div>
         </nav>
-    )
+    );
 }

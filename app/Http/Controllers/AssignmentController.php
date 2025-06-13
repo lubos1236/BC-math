@@ -86,11 +86,24 @@ class AssignmentController extends Controller
             'task' => 'required|string',
             'variables' => 'required|string',
             'solution' => 'required|string',
+            'hint_ids' => 'nullable|array', // Ak hint_ids existuje, musí to byť pole
+            'hint_ids.*' => 'integer|exists:hints,id', // Každý ID hintu musí byť platný a existovať v tabuľke hints
         ]);
+
+        // Nájdeme úlohu podľa ID
         $assignment = Assignment::findOrFail($request->input('id'));
-        $assignment->update($request->all());
+
+        // Aktualizujeme úlohu
+        $assignment->update($request->only(['subject_id', 'task', 'variables', 'solution']));
+
+        // Ak sú hinty prítomné, aktualizujeme ich
+        if ($request->has('hint_ids')) {
+            $assignment->hints()->sync($request->input('hint_ids')); // Sync asociovaných hintov (toto predpokladá vzťah M:N)
+        }
+
         return response()->json(['message' => 'Assignment updated successfully']);
     }
+
 
     public function get($n)
     {
@@ -123,4 +136,5 @@ class AssignmentController extends Controller
         $this->authorize('viewAny', Assignment::class);
         return response()->json($assignments);
     }
+
 }

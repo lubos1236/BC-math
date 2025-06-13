@@ -78,29 +78,31 @@ export default function AdminPanel() {
     return (
         <Block>
             <div className="p-4">
-                <h1 className="text-2xl mb-4">User Table</h1>
-                <PaginatedTable<User>
-                    data={data}
-                    columns={[
-                        {header: 'ID', accessor: 'id'},
-                        {header: 'Meno', accessor: 'name'},
-                        {header: 'Email', accessor: 'email'},
-                        {header: 'Rola', accessor: 'role'},
-                    ]}
-                    onEdit={handleEdit}
-                    onDelete={handleDelete}
-                />
+                <h1 className="text-2xl mb-4 sm:text-xl md:text-2xl lg:text-3xl">Užívatelia</h1>
+                <div className="overflow-x-auto w-full">
+                    <PaginatedTable<User>
+                        data={data}
+                        columns={[
+                            { header: 'ID', accessor: 'id' },
+                            { header: 'Meno', accessor: 'name' },
+                            { header: 'Email', accessor: 'email' },
+                            { header: 'Rola', accessor: 'role' },
+                        ]}
+                        onEdit={handleEdit}
+                        onDelete={handleDelete}
+                    />
+                </div>
             </div>
 
             {editingUser && (
                 <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
-                    <div className="bg-light-background dark:bg-dark-background p-6 rounded shadow-lg w-96 space-y-4">
-                        <h2 className="text-xl font-bold">Edit User</h2>
+                    <div className="bg-light-background dark:bg-dark-background p-6 rounded shadow-lg w-full sm:w-80 md:w-96 lg:w-1/3 xl:w-1/4 space-y-4">
+                        <h2 className="text-xl font-bold sm:text-lg md:text-xl lg:text-2xl">Upraviť úžívateľa</h2>
 
                         <div>
-                            <label className="block mb-1">Name:</label>
+                            <label className="block mb-1">Meno:</label>
                             <input
-                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
+                                className="w-full border  p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.name}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, name: e.target.value })
@@ -111,7 +113,7 @@ export default function AdminPanel() {
                         <div>
                             <label className="block mb-1">Email:</label>
                             <input
-                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
+                                className="w-full border  p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.email}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, email: e.target.value })
@@ -120,9 +122,9 @@ export default function AdminPanel() {
                         </div>
 
                         <div>
-                            <label className="block mb-1">Role:</label>
+                            <label className="block mb-1">Rola:</label>
                             <select
-                                className="w-full border p-2 rounded bg-light-background dark:bg-dark-background"
+                                className="w-full border  p-2 rounded bg-light-background dark:bg-dark-background"
                                 value={editingUser.role}
                                 onChange={(e) =>
                                     setEditingUser({ ...editingUser, role: e.target.value as Role })
@@ -138,13 +140,13 @@ export default function AdminPanel() {
                                 className="px-4 py-2 bg-light-card dark:bg-dark-card rounded "
                                 onClick={() => setEditingUser(null)}
                             >
-                                Cancel
+                                Zrušiť
                             </button>
                             <button
                                 className="px-4 py-2 bg-blue-500 text-light-text dark:text-dark-text rounded"
                                 onClick={handleSave}
                             >
-                                Save
+                                Uložiť
                             </button>
                         </div>
                     </div>
@@ -152,4 +154,5 @@ export default function AdminPanel() {
             )}
         </Block>
     );
+
 }

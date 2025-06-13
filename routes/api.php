@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AssignmentController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HintController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ThemeController;
@@ -54,5 +55,13 @@ Route::group(['middleware' => 'api'], function () {
         Route::get('/users', [UserController::class,'getNonAdminUsers']);
         Route::post('/users/edit', [UserController::class,'editUser']);
         Route::delete('/users/delete', [UserController::class,'deleteUser']);
+
+        Route::get('/assignments/{assignmentId}/hints', [AssignmentController::class, 'getHintsForAssignment']);
+        Route::post('/assignments/{assignmentId}/hints', [AssignmentController::class, 'attachHintsToAssignment']);
+        Route::get('/hints', [HintController::class, 'index']);
+        Route::post('/hints', [HintController::class, 'store']);
+        Route::put('/hints/{id}', [HintController::class, 'update']);
+        Route::delete('/hints/{id}', [HintController::class, 'destroy']);
+
     });
 });

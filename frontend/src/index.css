@@ -1,11 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-@layer utilities{
-    input:-webkit-autofill{
-        bckground-color:#374151!important;
-        color: #fff;
+
+@layer utilities {
+    /* Svetlý režim */
+    input:-webkit-autofill {
+        background-color: #e5e7eb !important;
+        -webkit-text-fill-color: #000 !important;
+        color: #000 !important;
+        -webkit-box-shadow: 0 0 0px 1000px #e5e7eb inset !important;
+        box-shadow: 0 0 0px 1000px #e5e7eb inset !important;
+    }
+
+    /* Tmavý režim (Tailwind: dark mode cez triedu .dark) */
+    .dark input:-webkit-autofill {
+        background-color: #374151 !important; /* bg-gray-700 */
         -webkit-text-fill-color: #fff !important;
+        color: #fff !important;
         -webkit-box-shadow: 0 0 0px 1000px #374151 inset !important;
         box-shadow: 0 0 0px 1000px #374151 inset !important;
     }

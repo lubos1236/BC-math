@@ -2,7 +2,7 @@ import Block from "../components/Block.tsx";
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../components/AuthProvider.tsx";
 import PaginatedTable from "../components/PaginatedTable.tsx";
-import LatexComponent from "../components/LatexComponent.tsx";
+import MarkdownComponent from "../components/MarkdownComponent.tsx";
 import { Theme } from "./Home.tsx";
 
 export default function Themes() {
@@ -105,22 +105,26 @@ export default function Themes() {
     return (
         <Block>
             <div className="p-4">
-                <h1 className="text-2xl mb-4">Themes</h1>
-                <button
-                    onClick={() => setShowCreateModal(true)}
-                    className="mb-4 px-4 py-2 bg-green-500 text-light-text dark:text-dark-text rounded"
-                >
-                    +
-                </button>
-                <PaginatedTable
-                    data={data}
-                    columns={[
-                        { header: 'ID', accessor: 'id' },
-                        { header: 'Názov', accessor: 'title' },
-                    ]}
-                    onEdit={(item) => handleEdit(item)}
-                    onDelete={(item) => handleDelete(item)}
-                />
+                <div className="flex justify-between items-center mb-4">
+                    <h1 className="text-2xl mb-4">Témy</h1>
+                    <button
+                        onClick={() => setShowCreateModal(true)}
+                        className="mb-4 px-4 py-2 bg-blue-600 text-light-text dark:text-dark-text rounded"
+                    >
+                        +
+                    </button>
+                </div>
+                <div className="overflow-x-auto w-full">
+                    <PaginatedTable
+                        data={data}
+                        columns={[
+                            { header: 'ID', accessor: 'id' },
+                            { header: 'Názov', accessor: 'title' },
+                        ]}
+                        onEdit={(item) => handleEdit(item)}
+                        onDelete={(item) => handleDelete(item)}
+                    />
+                </div>
             </div>
 
             {/* Modal for editing theme */}
@@ -152,7 +156,7 @@ export default function Themes() {
                             <div className="w-1/2">
                                 <label className="block font-semibold mb-2">Náhľad:</label>
                                 <div className="w-full h-full p-2 border rounded overflow-auto bg-light-background dark:bg-dark-background whitespace-pre-wrap">
-                                    <LatexComponent markDown={editItem.text} />
+                                    <MarkdownComponent markDown={editItem.text} />
                                 </div>
                             </div>
                         </div>
@@ -181,11 +185,11 @@ export default function Themes() {
             {/* Modal for creating new theme */}
             {showCreateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                    <div className="bg-light-background dark:bg-dark-background p-6 rounded-xl shadow-lg w-[600px] max-w-full flex flex-col">
-                        <h2 className="text-xl font-bold mb-4">Create New Theme</h2>
+                    <div className="bg-light-background dark:bg-dark-background p-6 rounded-xl shadow-lg w-[1200px] h-[800px] max-w-full flex flex-col">
+                        <h2 className="text-xl font-bold mb-4">Nová Téma</h2>
 
                         <div className="mb-6">
-                            <label className="block font-semibold mb-2">Theme Title:</label>
+                            <label className="block font-semibold mb-2">Názov:</label>
                             <input
                                 type="text"
                                 value={newTheme.title}
@@ -194,13 +198,22 @@ export default function Themes() {
                             />
                         </div>
 
-                        <div className="mb-6">
-                            <label className="block font-semibold mb-2">Theme Text:</label>
-                            <textarea
-                                value={newTheme.text}
-                                onChange={(e) => setNewTheme({ ...newTheme, text: e.target.value })}
-                                className="w-full p-2 border rounded resize-none bg-light-background dark:bg-dark-background"
-                            />
+                        <div className="flex gap-6 mb-6 h-[500px] ">
+                            <div className="w-1/2">
+                                <label className="block font-semibold mb-2">Text</label>
+                                <textarea
+                                    value={newTheme.text}
+                                    onChange={(e) => setNewTheme({ ...newTheme, text: e.target.value })}
+                                    className="w-full h-full p-2 border rounded resize-none bg-light-background dark:bg-dark-background"
+                                />
+                            </div>
+
+                            <div className="w-1/2">
+                                <label className="block font-semibold mb-2">Náhľad:</label>
+                                <div className="w-full h-full p-2 border rounded overflow-auto bg-light-background dark:bg-dark-background whitespace-pre-wrap">
+                                    <MarkdownComponent markDown={newTheme.text} />
+                                </div>
+                            </div>
                         </div>
 
                         <div className="mt-auto flex justify-end space-x-2">
@@ -211,13 +224,13 @@ export default function Themes() {
                                 }}
                                 className="px-4 py-2 bg-gray-300 rounded"
                             >
-                                Cancel
+                                Zrušiť
                             </button>
                             <button
                                 onClick={handleCreate}
                                 className="px-4 py-2 bg-green-500 text-light-text dark:text-dark-text rounded"
                             >
-                                Create
+                                Vytvoriť
                             </button>
                         </div>
                     </div>

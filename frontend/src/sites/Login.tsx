@@ -75,7 +75,7 @@ export default function Login() {
                                         onChange={(e) => setEmail(e.target.value)}
                                         placeholder="Email"
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         border
@@ -100,7 +100,7 @@ export default function Login() {
                                         onChange={(e) => setPassword(e.target.value)}
                                         placeholder="Heslo"
                                         className="
-                                        border-[#E9EDF4]
+                                        border-black
                                         w-full
                                         rounded-md
                                         bg-light-card2

@@ -1,16 +1,17 @@
-import {To, useNavigate} from "react-router-dom";
-import {useContext, useEffect, useState} from "react";
-import {AuthContext} from "../components/AuthProvider.tsx";
+import { To, useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../components/AuthProvider.tsx";
 import Block from "../components/Block.tsx";
 import TestSelection from "../components/TestSelection.tsx";
-import {Assignment} from "../utils/assignmentUtils.ts";
+import { Assignment } from "../utils/assignmentUtils.ts";
 
 export interface Theme {
-    id: number
-    title: string
-    text: string
-    assignment_ids?: Assignment[]
+    id: number;
+    title: string;
+    text: string;
+    assignment_ids?: Assignment[];
 }
+
 export default function Home() {
     const navigate = useNavigate();
     const auth = useContext(AuthContext);
@@ -31,39 +32,35 @@ export default function Home() {
             setData(await response.json());
         };
         fetchThemes();
+    }, []);
 
-    },[]);
-
-    const handleBoxClick = (link: To, data :Theme) => {
-        navigate(link);
-        navigate(link, {state: {data:data},});
-    }
+    const handleBoxClick = (link: To, data: Theme) => {
+        console.log(data);
+        navigate(link, { state: { data: data } });
+    };
 
     return (
         <Block>
-            <div className="container mx-auto">
-                <div className="mx-0 grid grid-cols-4 gap-0">
+            <div className="container mx-auto px-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
                     {data.map((box) => (
-                        <button type="button" onClick={() => handleBoxClick('/tema-'+box.id,box)} key={box.id}
-                                className="max-w-sm rounded overflow-hidden shadow-lg scale-75 hover:scale-110 transform transition duration-300 bg-light-card2 dark:bg-dark-card2">
-                             {/*<img className="w-full" src={box.image} alt={box.alt}/>*/}
-                            <div className="px-6 py-4">
-                                <div className="font-bold text-xl mb-2">{box.title}</div>
-                                {/*<p className="text-base">*/}
-                                {/*    {box.text}*/}
-                                {/*</p>*/}
+                        <button
+                            type="button"
+                            onClick={() => handleBoxClick('/tema-' + box.id, box)}
+                            key={box.id}
+                            className="rounded overflow-hidden shadow-lg bg-light-card2 dark:bg-dark-card2 transform transition duration-300 hover:scale-105 text-left w-full h-full"
+                        >
+                            <div className="px-4 py-4 h-full flex flex-col justify-between">
+                                <div className="font-bold text-xl mb-2 break-words">{box.title}</div>
                             </div>
                         </button>
-
                     ))}
                 </div>
 
-
-                <div className="mx-4">
-                    <TestSelection/>
+                <div className="mb-8">
+                    <TestSelection />
                 </div>
             </div>
         </Block>
-
-    )
+    );
 }

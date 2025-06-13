@@ -1,6 +1,6 @@
 import {useNavigate, useLocation} from 'react-router-dom';
 import Block from "../components/Block.tsx";
-import LatexComponent from "../components/LatexComponent";
+import MarkdownComponent from "../components/MarkdownComponent.tsx";
 import {useEffect, useState} from "react";
 import {Theme} from "./Home.tsx";
 export default function Subject() {
@@ -17,6 +17,7 @@ export default function Subject() {
 
     const navigateToTest = () => {
         console.log(data);
+        console.log(data.assignment_ids);
         //navigate('/test', {state: {ids: ids,subject: [subject],count: ids.length,from:"subject"},});
         navigate('/test', {state: {ids: data.assignment_ids ,subject: data.id+1,count: data.assignment_ids.length,from:"subject"},});
     }
@@ -38,7 +39,7 @@ export default function Subject() {
                         sm:px-12
                         md:px-[60px]
                         ">
-                            <LatexComponent markDown={latexCode}/>
+                            <MarkdownComponent markDown={latexCode}/>
                             <button onClick={navigateToTest}
                             className="bg-light-card2 dark:bg-dark-card2 font-bold py-2 px-4 rounded block mx-auto text-xl"
                             >Spustiť Test

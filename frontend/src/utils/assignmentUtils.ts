@@ -138,7 +138,7 @@ function computeVariance(numbers: number[]): number {
 
 export function checkSolution(assignment: Assignment, result: string, showResult: boolean = false): boolean | string {
     const solutions = assignment.solution.split(";");
-    const userResults = result.split(";").map(s => s.trim());
+    const userResults = (result || "").split(";").map(s => s.trim());
 
     let match;
 

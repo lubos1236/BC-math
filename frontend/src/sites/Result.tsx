@@ -2,7 +2,7 @@ import Block from "../components/Block.tsx";
 import {PieChart} from "@mui/x-charts";
 import {useLocation} from "react-router-dom";
 import {Assignment, checkSolution} from "../utils/assignmentUtils.ts";
-import LatexComponent from "../components/LatexComponent.tsx";
+import MarkdownComponent from "../components/MarkdownComponent.tsx";
 
 
 export default function Result() {
@@ -16,52 +16,60 @@ export default function Result() {
     console.log(assignments);
     return (
         <Block>
-            <p>Výsledok</p>
-            <div className="relative w-[400px] h-[400px] mx-auto">
-                <PieChart series={[{
-                    data: data,
-                    innerRadius: 125,
-                    color: 'data.color',
-                }]}/>
-                <div
-                    className="absolute top-1/2 left-[40%] -translate-x-1/2
-                     -translate-y-1/2 text-lg font-bold
-                     text-center">
-                    <div className="text-8xl">
+            <p className="text-center text-xl font-semibold mb-4">Výsledok</p>
+
+            <div className="relative w-full max-w-[400px] aspect-square mx-auto">
+                <PieChart
+                    series={[
+                        {
+                            data: data,
+                            innerRadius: 125,
+                            color: 'data.color',
+                        },
+                    ]}
+                />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-lg font-bold text-center">
+                    <div className="text-5xl sm:text-6xl md:text-8xl">
                         {Math.floor(successRate)}%
                     </div>
                 </div>
             </div>
 
+            {/* Výpis úloh */}
+            <div className="mt-6 space-y-6">
+                {assignments.map((assignment, index) => {
+                    const isCorrect = checkSolution(assignment, assignment.submittedSolution);
 
-            {assignments.map((assignment, index) => {
-                // Skontrolujeme, či je odpoveď správna
-                const isCorrect = checkSolution(assignment, assignment.submittedSolution);
+                    return (
+                        <div
+                            key={assignment.id ?? index}
+                            className="w-full border-2 border-light-card2 dark:border-dark-card2 rounded-lg p-4"
+                        >
+                            <h1 className="text-xl text-center mb-2">Úloha: {index + 1}</h1>
 
-                return (
-                    <div key={assignment.id ?? index} className="w-full mb-4 min-h-20 border-2 border-light-card2 dark:border-dark-card2 rounded-lg ">
-                        <h1 className="p-2 text-xl text-center">Úloha: {index + 1}</h1>
-                        <p className="p-2 text-center">Zadanie: <LatexComponent markDown={assignment.task}/></p>
-                        <div className="flex row p-2 m-2">
-                            {/* Zobrazenie generovaného riešenia */}
-                            <p className="p-2 flex-1 border">
-                                Riešenie: {' ' + checkSolution(assignment, assignment.submittedSolution, true)}
-                            </p>
+                            <div className="text-center mb-4">
+                                Zadanie:
+                                <MarkdownComponent markDown={assignment.task} />
+                            </div>
 
-                            {/* Kontrola správnosti odpovede a priradenie farby */}
-                            {isCorrect ? (
-                                <p className="p-2 flex-1 border text-green-500">
+                            <div className="flex flex-col md:flex-row gap-4">
+                                <p className="flex-1 border rounded p-2">
+                                    Riešenie: {' ' + checkSolution(assignment, assignment.submittedSolution, true)}
+                                </p>
+
+                                <p
+                                    className={`flex-1 border rounded p-2 ${
+                                        isCorrect ? 'text-green-500' : 'text-red-500'
+                                    }`}
+                                >
                                     Vaše riešenie: {' ' + assignment.submittedSolution}
                                 </p>
-                            ) : (
-                                <p className="p-2 flex-1 border text-red-500">
-                                    Vaše riešenie: {' ' + assignment.submittedSolution}
-                                </p>
-                            )}
+                            </div>
                         </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
         </Block>
     );
+
 }

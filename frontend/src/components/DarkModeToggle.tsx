@@ -1,9 +1,17 @@
 import { useEffect, useState } from 'react';
 
 export default function DarkModeToggle() {
-    const [darkMode, setDarkMode] = useState(() =>
-        localStorage.getItem('theme') === 'dark'
-    );
+    const [darkMode, setDarkMode] = useState<boolean>(false);
+
+    useEffect(() => {
+        // Načítame predvoľby z localStorage pred renderovaním komponentu.
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'dark') {
+            setDarkMode(true);
+        } else {
+            setDarkMode(false);
+        }
+    }, []);
 
     useEffect(() => {
         const root = window.document.documentElement;
@@ -18,10 +26,11 @@ export default function DarkModeToggle() {
 
     return (
         <button
-            className="p-2 rounded bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text"
+            className="py-2 rounded bg-light-card dark:bg-dark-card text-light-text dark:text-dark-text transition-colors duration-300"
             onClick={() => setDarkMode(!darkMode)}
+            aria-label={`Switch to ${darkMode ? 'light' : 'dark'} mode`}
         >
-            Toggle {darkMode ? 'Light' : 'Dark'} Mode
+            {darkMode ? 'Vypnúť' : 'Zapnúť'} Dark Mode
         </button>
     );
 }

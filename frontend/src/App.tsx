@@ -15,6 +15,7 @@ import Subject from "./sites/Subject.tsx";
 import Result from "./sites/Result.tsx";
 import {Role} from "./utils/Role.tsx";
 import Themes from "./sites/Themes.tsx";
+import Navod from "./components/Navod.tsx";
 
 function App() {
     const auth = useContext(AuthContext)
@@ -25,6 +26,7 @@ function App() {
               <NavBar/>
           ):(
               <Fragment>
+                  <NavBar/>
                   <div className="m-[10%]"></div>
               </Fragment>
           )}
@@ -40,6 +42,7 @@ function App() {
                       <Route path="/result" element={<Result/>}/>
                       <Route path="/test" element={<Test/>}/>
                       <Route path="/me" element={<Me/>}/>
+                      <Route path="/navod" element={<Navod/>}/>
                   </Route>
                   <Route element={<GuardedRoute role={[Role.Admin]} />}>
                       <Route path="/users" element={<AdminPanel/>}/>

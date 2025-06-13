@@ -53,7 +53,6 @@ export default function TestSelection() {
         const subject = selectedIds.length > 0
             ? selectedIds
             : themes.map((theme) => theme.id);
-        console.log(subject+" "+sliderValue);
         navigate('/test', {
             state: {
                 subject,
@@ -64,17 +63,17 @@ export default function TestSelection() {
     };
 
     return (
-        <div className="border-2 border-dark-background dark:border-light-background px-3 py-2 rounded-lg">
+        <div className="border-2 border-dark-background dark:border-light-background px-4 py-3 rounded-lg">
             <button
                 type="button"
                 onClick={handleButtonClick}
-                className="text-light-text dark:text-dark-text bg-light-background dark:bg-dark-background font-medium rounded-lg py-2.5 h-14 text-center w-full mb-2"
+                className="text-light-text dark:text-dark-text bg-light-background dark:bg-dark-background font-medium rounded-lg py-2.5 h-14 text-center w-full mb-4"
             >
                 Vyskúšaj sa
             </button>
 
-            <div className="justify-items-center pt-1 pb-3">
-                <p className="text-center">Počet príkladov na tému: {sliderValue}</p>
+            <div className="text-center mb-4">
+                <p className="mb-2">Počet príkladov na tému: {sliderValue}</p>
                 <input
                     type="range"
                     min="1"
@@ -86,29 +85,27 @@ export default function TestSelection() {
                 />
             </div>
 
-            <div className="grid grid-cols-2 gap-4 pb-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 mb-4">
                 {themes.map((theme) => (
-                    <div key={theme.id}>
-                        <div className="flex items-center ps-4 border border-light-background dark:border-dark-background rounded">
-                            <input
-                                id={`theme-${theme.id}`}
-                                type="checkbox"
-                                checked={selectedThemes[theme.id] || false}
-                                onChange={(e) => handleCheckboxChange(theme.id, e.target.checked)}
-                                className="w-4 h-4 rounded"
-                            />
-                            <label
-                                htmlFor={`theme-${theme.id}`}
-                                className="w-full py-4 ms-2 text-sm font-medium"
-                            >
-                                {theme.title}
-                            </label>
-                        </div>
-                    </div>
+                    <label
+                        key={theme.id}
+                        className="flex items-center px-4 py-3 border rounded cursor-pointer border-light-background dark:border-dark-background bg-light-card2 dark:bg-dark-card2 hover:bg-light-card dark:hover:bg-dark-card transition-colors"
+                    >
+                        <input
+                            type="checkbox"
+                            checked={selectedThemes[theme.id] || false}
+                            onChange={(e) => handleCheckboxChange(theme.id, e.target.checked)}
+                            className="w-4 h-4 rounded accent-blue-600"
+                        />
+                        <span className="ml-3 text-sm font-medium text-light-text dark:text-dark-text break-words">
+                {theme.title}
+            </span>
+                    </label>
                 ))}
             </div>
 
-            <div className="text-xs text-red-500">
+
+            <div className="text-xs text-red-500 text-center">
                 *Ak výber neuskutočníte, tak budú vybrané všetky témy
             </div>
         </div>

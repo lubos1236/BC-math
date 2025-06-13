@@ -71,45 +71,58 @@ export default function Me() {
 
     return (
         <Block>
-                <div className="w-full  bg-light-card dark:bg-dark-card2 rounded-lg p-6 shadow">
-                    <h2 className="text-xl font-semibold mb-4 text-center">Tvoje štatistiky</h2>
-                    <ul className="space-y-4 text-lg">
+            <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="bg-light-card dark:bg-dark-card2 rounded-lg p-4 sm:p-6 shadow">
+                    <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center">Tvoje štatistiky</h2>
+                    <ul className="space-y-2 sm:space-y-4 text-base sm:text-lg">
                         <li><strong>Počet ukončených testov:</strong> {data.length}</li>
                         <li><strong>Priemerný dosiahnutý výsledok:</strong> {getAverageSuccessRate(data).toFixed(2)}%</li>
                     </ul>
-                    <br/>
-                    <hr></hr>
-                    <br/>
-                    <h2 className="text-xl font-semibold mb-4 text-center">Posledný test</h2>
-                    <ul className="space-y-4 text-lg">
+
+                    <div className="my-6 border-t border-gray-300 dark:border-gray-600" />
+
+                    <h2 className="text-lg sm:text-xl font-semibold mb-4 text-center">Posledný test</h2>
+                    <ul className="space-y-2 sm:space-y-4 text-base sm:text-lg">
                         <li><strong>Dátum:</strong> {data.length > 0 ? data[data.length - 1].created_at : 'N/A'}</li>
                         <li><strong>Počet správnych odpovedí:</strong> {data.length > 0 ? data[data.length - 1].themes.reduce((acc, theme) => acc + theme.r_count, 0) : 0}</li>
                         <li><strong>Počet nesprávnych odpovedí:</strong> {data.length > 0 ? data[data.length - 1].themes.reduce((acc, theme) => acc + theme.w_count, 0) : 0}</li>
                         <li><strong>Dosiahnutý výsledok:</strong> {data.length > 0 ? data[data.length - 1].success_rate.toFixed(2) : 0}%</li>
-                        <li><strong>Písané z tém:</strong></li> {data.length > 0 ? data[data.length - 1].themes.map((theme) => (
-                        <li key={theme.id} className="p-3 rounded-lg bg-light-background dark:bg-dark-background shadow-sm">
-                        <div className="font-semibold text-primary">
-                            {theme.theme_title ?? `Téma #${theme.theme}`}
-                        </div>
-                        <div className="text-sm text-muted-foreground ml-2">
-                            ✅ Správne: <span className="text-green-600 font-medium">{theme.r_count}</span>,
-                            ❌ Nesprávne: <span className="text-red-600 font-medium">{theme.w_count}</span>
-                        </div>
-                    </li>
-                    )) : <li>Žiadne témy</li>}
+                        <li><strong>Písané z tém:</strong></li>
+                        {data.length > 0 ? (
+                            data[data.length - 1].themes.map((theme) => (
+                                <li key={theme.id} className="p-3 rounded-lg bg-light-background dark:bg-dark-background shadow-sm">
+                                    <div className="font-semibold text-primary">
+                                        {theme.theme_title ?? `Téma #${theme.theme}`}
+                                    </div>
+                                    <div className="text-sm sm:text-base text-muted-foreground ml-2">
+                                        ✅ Správne: <span className="text-green-600 font-medium">{theme.r_count}</span>,
+                                        ❌ Nesprávne: <span className="text-red-600 font-medium">{theme.w_count}</span>
+                                    </div>
+                                </li>
+                            ))
+                        ) : (
+                            <li>Žiadne témy</li>
+                        )}
                     </ul>
                 </div>
-            <hr /><br/>
-            <h2 className="text-xl font-semibold text-center">História testov</h2>
-            <PaginatedTable
-                data={formattedTableData}
-                columns={[
-                    { header: 'Test #', accessor: 'id' },
-                    { header: 'Dátum', accessor: 'created_at' },
-                    { header: 'Úspešnosť', accessor: 'success_rate' },
-                    { header: 'Témy', accessor: 'themes' },
-                ]}
-            />
+
+                <div className="my-8">
+                    <h2 className="text-lg sm:text-xl font-semibold text-center mb-4">História testov</h2>
+                    <div className="overflow-x-auto w-full">
+                        <PaginatedTable
+                            data={formattedTableData}
+                            columns={[
+                                { header: 'Test #', accessor: 'id' },
+                                { header: 'Dátum', accessor: 'created_at' },
+                                { header: 'Úspešnosť', accessor: 'success_rate' },
+                                { header: 'Témy', accessor: 'themes' },
+                            ]}
+                        />
+                    </div>
+                </div>
+            </div>
         </Block>
     );
+
+
 }
