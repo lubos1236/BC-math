@@ -211,7 +211,6 @@ export function checkSolution(assignment: Assignment, result: string, showResult
             const combinations = computeCombinations(n, k);
             newSolution = newSolution.replace(match[0], combinations.toString());
         }
-
         allSolutions.push(eval(newSolution));
     }
 
