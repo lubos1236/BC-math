@@ -15,12 +15,11 @@ class ThemeController extends Controller
     public function getAll()
     {
         // Get themes with assignment ids
-        $themes = Theme::with('assignments:id')->get()->map(function ($theme) {
+        $themes = Theme::all()->map(function ($theme) {
             return [
                 'id' => $theme->id,
                 'title' => $theme->title,
                 'text' => $theme->text,
-                'assignment_ids' => $theme->assignments->pluck('id'),
             ];
         });
 

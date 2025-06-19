@@ -89,9 +89,6 @@ export default function Login() {
                                         focus-visible:shadow-none
                                         "
                                     />
-                                    {/*<div className="flex">*/}
-                                    {/*    <span className="text-red-400 text-sm m-2 p-2">error</span>*/}
-                                    {/*</div>*/}
                                 </div>
                                 <div className="mb-4">
                                     <input
@@ -114,9 +111,7 @@ export default function Login() {
                                         focus-visible:shadow-none
                                         "
                                     />
-                                    {/*<div className="flex">*/}
-                                    {/*    <span className="text-red-400 text-sm m-2 p-2">error</span>*/}
-                                    {/*</div>*/}
+
                                 </div>
                                 <div className="mb-10">
                                     <button
@@ -136,10 +131,7 @@ export default function Login() {
                                     </button>
                                 </div>
                             </form>
-                            {/*<Link to="/forgot-password"*/}
-                            {/*      className="mb-2 inline-block text-base text-[#adadad] hover:text-primary hover:underline">*/}
-                            {/*    Zabidol si heslo?*/}
-                            {/*</Link>*/}
+
                             <p className="text-base text-light-text dark:text-dark-text">
                                 Niesi členom?{" "}
                                 <Link to="/register" className="text-primary hover:underline">Registrácia</Link>

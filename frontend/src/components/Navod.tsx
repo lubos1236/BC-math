@@ -26,12 +26,12 @@ export default function Navod() {
 
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
-            {/* Vľavo: surový text */}
+
             <pre className="bg-gray-100 dark:bg-gray-800 text-sm p-4 rounded overflow-auto whitespace-pre-wrap">
         {text}
       </pre>
 
-            {/* Vpravo: rovnaký text, iný štýl */}
+
             <MarkdownComponent markDown={text}/>
         </div>
     );

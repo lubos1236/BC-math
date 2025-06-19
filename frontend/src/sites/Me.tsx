@@ -8,8 +8,8 @@ export type ThemeStats = {
     id: number;
     theme: number;
     test_id: number;
-    r_count: number; // správne odpovede
-    w_count: number; // nesprávne odpovede
+    r_count: number;
+    w_count: number;
 };
 
 export type UserTestStats = {

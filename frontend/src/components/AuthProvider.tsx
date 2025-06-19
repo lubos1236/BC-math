@@ -51,7 +51,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                     setToken(data.access_token);
                     setUser(data.user);
 
-                    // Ak je na login/register a je prihlásený, presmeruj na home
                     if (noRefreshSites.includes(location.pathname)) {
                         navigate('/');
                     }
@@ -81,7 +80,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setToken,
     };
 
-    // Počas načítania nerenderuj nič (alebo loading spinner)
     if (isLoading) {
         return (
             <div className="flex items-center justify-center min-h-screen bg-light-background dark:bg-dark-background">

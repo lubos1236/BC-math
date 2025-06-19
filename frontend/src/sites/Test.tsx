@@ -23,15 +23,14 @@ export default function Test() {
     useEffect(() => {
         const fetchAssignments = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/' + (checker ? "assignmentsBySubject" : "assignments"), {
+                const response = await fetch('http://localhost:8000/api/assignmentsBySubject', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         Authorization: `Bearer ${auth.token}`,
                     },
-                    body: checker ?
-                        JSON.stringify({subject: subjects, count: count}) :
-                        JSON.stringify({ids: ids}),
+                    body:
+                        JSON.stringify({subject: subjects, count: count})
                 });
 
                 const data = await response.json();
@@ -86,7 +85,7 @@ export default function Test() {
             navigate("/result", {
                 state: {
                     successRate: successRate,
-                    assignments: assignments // <-- zachovávame existujúce zadania
+                    assignments: assignments
                 }
             });
         }
@@ -124,7 +123,7 @@ export default function Test() {
 
                                         <MarkdownComponent markDown={currentAssignment.task} />
 
-                                        {/* Input + Button */}
+
                                         <div className="flex flex-col sm:flex-row justify-center items-center sm:space-x-2 my-5">
                                             <input
                                                 type="text"
@@ -142,7 +141,7 @@ export default function Test() {
                                             </button>
                                         </div>
 
-                                        {/* Nápoveda */}
+
                                         {currentAssignment.hints && currentAssignment.hints.length > 0 && (
                                             <div className="text-center mb-4">
                                                 {currentHintIndex === -1 ? (

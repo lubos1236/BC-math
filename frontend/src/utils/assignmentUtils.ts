@@ -148,7 +148,7 @@ export function checkSolution(assignment: Assignment, result: string, showResult
         let newSolution = replaceText(solution, assignment.generatedValues!);
 
         // Rozptyl
-        const regexVariance = /var\(([^)]+)\)/g;
+        const regexVariance = /rozptyl\(([^)]+)\)/g;
         while ((match = regexVariance.exec(newSolution)) !== null) {
             const numbers = match[1].split(',').map(Number);
             const varianceValue = computeVariance(numbers);
@@ -169,6 +169,47 @@ export function checkSolution(assignment: Assignment, result: string, showResult
             const numbers = match[1].split(",").map(Number);
             const medianValue = computeMedian(numbers);
             newSolution = newSolution.replace(match[0], medianValue.toString());
+        }
+
+        //sum()
+        const regexSum = /sum\(([^)]+)\)/g;
+        while ((match = regexSum.exec(newSolution)) !== null) {
+            const numbers = match[1].split(',').map(Number);
+            const sumValue = numbers.reduce((acc, val) => acc + val, 0);
+            newSolution = newSolution.replace(match[0], sumValue.toString());
+        }
+
+        // Minimum
+        const regexMin = /min\(([^)]+)\)/g;
+        while ((match = regexMin.exec(newSolution)) !== null) {
+            const numbers = match[1].split(',').map(Number);
+            const minValue = Math.min(...numbers);
+            newSolution = newSolution.replace(match[0], minValue.toString());
+        }
+
+        // Maximum
+        const regexMax = /max\(([^)]+)\)/g;
+        while ((match = regexMax.exec(newSolution)) !== null) {
+            const numbers = match[1].split(',').map(Number);
+            const maxValue = Math.max(...numbers);
+            newSolution = newSolution.replace(match[0], maxValue.toString());
+        }
+
+        const regexVariations = /var\((\d+),(\d+)\)/g;
+        while ((match = regexVariations.exec(newSolution)) !== null) {
+            const n = parseInt(match[1]);
+            const k = parseInt(match[2]);
+            const variations = computeVariations(n, k);
+            newSolution = newSolution.replace(match[0], variations.toString());
+        }
+
+        // Kombinácie
+        const regexCombinations = /com\((\d+),(\d+)\)/g;
+        while ((match = regexCombinations.exec(newSolution)) !== null) {
+            const n = parseInt(match[1]);
+            const k = parseInt(match[2]);
+            const combinations = computeCombinations(n, k);
+            newSolution = newSolution.replace(match[0], combinations.toString());
         }
 
         allSolutions.push(eval(newSolution));
@@ -201,6 +242,23 @@ export function checkSolution(assignment: Assignment, result: string, showResult
     return true;
 }
 
+
+function factorial(n: number): number {
+    if (n === 0 || n === 1) return 1;
+    return n * factorial(n - 1);
+}
+
+
+function computeVariations(n: number, k: number): number {
+    if (k > n || k < 0) return 0;
+    return factorial(n) / factorial(n - k);
+}
+
+
+function computeCombinations(n: number, k: number): number {
+    if (k > n || k < 0) return 0;
+    return factorial(n) / (factorial(k) * factorial(n - k));
+}
 function parseUserValue(value: string): number {
     value = value.trim().replace(',', '.'); // podporuje 0,5 → 0.5
 
@@ -232,6 +290,7 @@ function parseUserValue(value: string): number {
 
     return NaN;
 }
+
 
 function computeMode(numbers: number[]) {
     const frequency: Record<number, number> = {};

@@ -73,7 +73,7 @@ const HintModal: React.FC<HintModalProps> = ({ isOpen, onClose, selectedHintIds,
 
     const handleEdit = (hint: Hint) => {
         setEditHint(hint);
-        setNewHint(hint.hint); // Prednastavi text do inputu pre editáciu
+        setNewHint(hint.hint);
     };
 
     const handleUpdateHint = async () => {
@@ -91,7 +91,7 @@ const HintModal: React.FC<HintModalProps> = ({ isOpen, onClose, selectedHintIds,
             .then((updated: Hint) => {
                 setHints(prev => prev.map(h => (h.id === updated.id ? updated : h)));
                 setNewHint("");
-                setEditHint(null); // Zrušiť režim úpravy
+                setEditHint(null);
             });
     };
 
@@ -109,8 +109,8 @@ const HintModal: React.FC<HintModalProps> = ({ isOpen, onClose, selectedHintIds,
     };
 
     const handleCancelEdit = () => {
-        setEditHint(null); // Zrušiť režim úpravy
-        setNewHint(""); // Resetovať vstup na prázdny
+        setEditHint(null);
+        setNewHint("");
     };
 
     if (!isOpen) return null;

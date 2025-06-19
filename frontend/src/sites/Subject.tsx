@@ -7,8 +7,6 @@ export default function Subject() {
     const navigate = useNavigate();
     const location = useLocation();
     const [latexCode, setLatexCode] = useState<string>('');
-    /*const [ids, setIds] = useState<number[]>([]);
-    const [subject, setSubject] = useState<number>(0);*/
     const data:Theme = location.state.data;
 
     useEffect(() => {
@@ -16,10 +14,8 @@ export default function Subject() {
     }, []);
 
     const navigateToTest = () => {
-        console.log(data);
-        console.log(data.assignment_ids);
-        //navigate('/test', {state: {ids: ids,subject: [subject],count: ids.length,from:"subject"},});
-        navigate('/test', {state: {ids: data.assignment_ids ,subject: data.id+1,count: data.assignment_ids.length,from:"subject"},});
+
+        navigate('/test', {state: {ids: data.assignment_ids ,subject: [data.id],count: 2,from:"subject"},});
     }
 
     return (

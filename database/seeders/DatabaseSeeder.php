@@ -15,9 +15,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $md1 = file_get_contents(base_path('database/data/Theme1.md'));
-        $md2 = file_get_contents(base_path('database/data/Theme2.md'));
-        $md3 = file_get_contents(base_path('database/data/Theme3.md'));
+        $md1 = file_get_contents(base_path('database/data/Theme1n.md'));
+        $md2 = file_get_contents(base_path('database/data/Theme2n.md'));
         \App\Models\User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
@@ -28,26 +27,9 @@ class DatabaseSeeder extends Seeder
             'title' => 'Úvod do Matematickej štatistiky',
             'text' => $md1,]);
         $theme2 = Theme::create([
-            'title' => 'Náhodná premenná',
+            'title' => 'Pravdepodobnosť a Kombinatorika',
             'text' => $md2,]);
-        $theme3 = Theme::create([
-            'title' => 'Bodové a intervalové odhady',
-            'text' => $md3,]);
 
-        /*\App\Models\Theme::factory()->create(
-            [
-                'title' => 'Úvod do Matematickej štatistiky',
-                'text' => '$$155=\frac{a}{b}$$',
-                'test_id' => '1',
-            ],
-        );
-        \App\Models\Theme::factory()->create(
-            [
-                'title' => 'Úvod do Matematickej štatistiky 2',
-                'text' => '$$2=\frac{a}{b}$$',
-                'test_id' => '1,2',
-            ],
-        );*/
 
         $hints=Hint::insert([
             ['hint'=>'Nápoveda 1'],
@@ -73,8 +55,5 @@ class DatabaseSeeder extends Seeder
         }
         Assignment::find(1)->hints()->attach([1]);
         Assignment::find(2)->hints()->attach([2,3,4,5]);
-
-        $theme1->assignments()->attach([1]);
-        $theme2->assignments()->attach([1,2]);
     }
 }

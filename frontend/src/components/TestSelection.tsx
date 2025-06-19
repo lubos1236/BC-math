@@ -77,7 +77,7 @@ export default function TestSelection() {
                 <input
                     type="range"
                     min="1"
-                    max="5"
+                    max="3"
                     step="1"
                     value={sliderValue}
                     onChange={(e) => setSliderValue(e.target.value)}

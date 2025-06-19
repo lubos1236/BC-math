@@ -9,7 +9,7 @@ import HintModal from "../components/HintModal.tsx";
 export default function Assignments() {
     const [data, setData] = useState<Assignment[]>([]);
     const [editItem, setEditItem] = useState<Assignment | null>(null);
-    const [generatedTask, setGeneratedTask] = useState<string>('');  // Pre generovaný text úlohy
+    const [generatedTask, setGeneratedTask] = useState<string>('');
     const [showModal, setShowModal] = useState(false);
     const [showHelpModal, setShowHelpModal] = useState(false);
     const auth = useContext(AuthContext);
@@ -36,22 +36,22 @@ export default function Assignments() {
 
     const handleEdit = (item: Assignment) => {
         const cloned = structuredClone(item);
-        setEditItem(cloned);  // Uložíme pôvodný text úlohy pred generovaním
+        setEditItem(cloned);
 
-        // Predpokladám, že `cloned.hints` je pole Hint[] a chceme len ids
+
         if (cloned.hints) {
             setSelectedHints(cloned.hints.map(hint => hint.id));
         } else {
-            setSelectedHints([]); // Pre istotu ak hinty nie sú
+            setSelectedHints([]);
         }
 
         setShowModal(true);
-        setGeneratedTask(''); // Reset generovaného textu pri úprave
+        setGeneratedTask('');
     };
 
     useEffect(() => {
         if (showModal && editItem && generatedTask === '') {
-            // Generovanie úlohy len pri otvorení modalu a keď ešte neexistuje vygenerovaný text
+
             handleGenerate();
         }
     }, [showModal, editItem]);
@@ -59,9 +59,9 @@ export default function Assignments() {
     const handleGenerate = () => {
         if (!editItem) return;
 
-        // Generujeme nový náhľad na úlohu podľa `editItem.task`
+
         const processed = processAssignments([structuredClone(editItem)]);
-        setGeneratedTask(processed[0].task);  // Nastavíme generovaný text
+        setGeneratedTask(processed[0].task);
     };
 
     const handleNew = () => {
@@ -80,10 +80,10 @@ export default function Assignments() {
     const handleSave = async () => {
         if (!editItem) return;
 
-        // Pridaj hinty do `editItem`
+
         const payload = {
             ...editItem,
-            hint_ids: selectedHints, // Predpokladám, že server očakáva pole id hintov
+            hint_ids: selectedHints,
         };
 
         const method = editItem.id === 0 ? 'POST' : 'PUT';
@@ -106,7 +106,7 @@ export default function Assignments() {
                 setShowModal(false);
                 setEditItem(null);
                 setGeneratedTask('');
-                setSelectedHints([]);  // Reset selected hints after save
+                setSelectedHints([]);
             } else {
                 console.error('Failed to save assignment');
             }
@@ -189,7 +189,7 @@ export default function Assignments() {
                                 <label className="block font-semibold mb-1">Úloha:</label>
                                 <textarea
                                     value={editItem.task}
-                                    onChange={(e) => setEditItem({ ...editItem, task: e.target.value })}  // Umožníme úpravy
+                                    onChange={(e) => setEditItem({ ...editItem, task: e.target.value })}
                                     className="w-full h-64 p-2 border rounded resize-none bg-light-background dark:bg-dark-background"
                                 />
                             </div>

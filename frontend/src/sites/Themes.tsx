@@ -9,8 +9,8 @@ export default function Themes() {
     const [data, setData] = useState<Theme[]>([]);
     const [editItem, setEditItem] = useState<Theme | null>(null);
     const [showModal, setShowModal] = useState(false);
-    const [showCreateModal, setShowCreateModal] = useState(false); // New state for create modal
-    const [newTheme, setNewTheme] = useState<Theme>({ id: 0, title: '', text: '' }); // New state for new theme
+    const [showCreateModal, setShowCreateModal] = useState(false);
+    const [newTheme, setNewTheme] = useState<Theme>({ id: 0, title: '', text: '' });
     const auth = useContext(AuthContext);
 
     useEffect(() => {
@@ -93,7 +93,7 @@ export default function Themes() {
             if (response.ok) {
                 await fetchData();
                 setShowCreateModal(false);
-                setNewTheme({ id: 0, title: '', text: '' }); // Reset new theme state
+                setNewTheme({ id: 0, title: '', text: '' });
             } else {
                 console.error('Failed to create theme');
             }
@@ -127,7 +127,7 @@ export default function Themes() {
                 </div>
             </div>
 
-            {/* Modal for editing theme */}
+
             {showModal && editItem && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-light-background dark:bg-dark-background p-6 rounded-xl shadow-lg w-[1200px] h-[800px] max-w-full flex flex-col">
@@ -182,7 +182,7 @@ export default function Themes() {
                 </div>
             )}
 
-            {/* Modal for creating new theme */}
+
             {showCreateModal && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-light-background dark:bg-dark-background p-6 rounded-xl shadow-lg w-[1200px] h-[800px] max-w-full flex flex-col">
@@ -220,7 +220,7 @@ export default function Themes() {
                             <button
                                 onClick={() => {
                                     setShowCreateModal(false);
-                                    setNewTheme({ id: 0, title: '', text: '' }); // Reset new theme state
+                                    setNewTheme({ id: 0, title: '', text: '' });
                                 }}
                                 className="px-4 py-2 bg-gray-300 rounded"
                             >

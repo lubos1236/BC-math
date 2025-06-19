@@ -77,7 +77,7 @@ export function PaginatedTable<T extends { id: number }>({
                 </tbody>
             </table>
 
-            {/* Pagination */}
+
             <div className="mt-4 flex justify-between items-center gap-4">
                 <div className="flex items-center gap-2">
                     <label htmlFor="rowsPerPage" className="text-sm">Riadkov na stránku:</label>

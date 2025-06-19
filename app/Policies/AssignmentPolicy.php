@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\Role;
 use App\Models\User;
 use App\Models\Assignment;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -16,6 +17,11 @@ class AssignmentPolicy
      * @param  \App\Models\User  $user
      * @return mixed
      */
+    public function adminOrManager(User $user): bool
+    {
+        return $user->role === Role::Admin || $user->role === Role::Manager;
+    }
+
     public function create(User $user)
     {
         // Allow only authenticated users to create assignments

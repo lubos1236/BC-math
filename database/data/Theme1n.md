@@ -1,4 +1,5 @@
-## Téma 1: Úvod do Matematickej štatistiky
+
+# Téma 1: Úvod do Matematickej štatistiky
 
 Matematická štatistika je odbor matematiky zaoberajúci sa zberom, analýzou a
 interpretáciou dát. Jej hlavným cieľom je odhadovať vlastnosti populácie na
@@ -17,55 +18,6 @@ zdravotníctva. Je mocným nástrojom pre interpretáciu dát a rozhodovacie pro
 Pomáha vytvárať informované rozhodnutia a porozumieť javom vo svete okolo nás.
 
 
-## Príklad: Hádzanie mincí
-
-Predstavme si, že chceme zistiť pravdepodobnosť toho, že pri jednom hode mincí padne hlava. Etapy štatistickej práce:
-
-1. **Zber dát**: Vykonáme sériu hodov mincí. Napríklad 100 hodov.
-2. **Spracovanie dát**: Zistíme, že v 60 prípadoch padla hlava.
-3. **Analýza dát**: Pravdepodobnosť hlavy je:
-
-   $$
-   P(\text{hlava}) = \frac{60}{100} = 0.6 \quad \text{(60\%)}
-   $$
-
-4. **Záver**: Odhad pravdepodobnosti, že pri hode mincí padne hlava, je 60 %.
-
-
-## Príklad: Oslava a pravdepodobnosť mien
-
-Na oslave je 100 hostí, z ktorých 10 sa volá Martin a 15 majú meno začínajúce na písmeno F.
-
-1. **a1)** Aká je pravdepodobnosť, že sa bude volať Martin?
-2. **a2)** Aká je pravdepodobnosť, že meno bude Martin alebo začne na F?
-3. **a3)** Aká je pravdepodobnosť, že meno nebude Martin, ale začne na F?
-4. **a4)** Aká je pravdepodobnosť, že meno nebude Martin a nezačne na F?
-
-   $$
-   1 - 0.25 = 0.75
-   $$
-
-
-## Hádzanie kockou
-
-Strany kocky sú očíslované 1 až 6.
-
-1. Pravdepodobnosť, že padne číslo 3:  
-   $$
-   \frac{1}{6}
-   $$
-
-2. Pravdepodobnosť, že padne číslo väčšie ako 4:  
-   $$
-   \frac{2}{6} = \frac{1}{3}
-   $$
-
-3. Pravdepodobnosť, že padne číslo menšie ako 5:  
-   $$
-   \frac{4}{6} = \frac{2}{3}
-   $$
-
-
 ## Medián
 
 Medián označujeme ako _med(x)_. Je to prostredný člen z usporiadaných hodnôt $x_i$.  
@@ -74,6 +26,7 @@ Ak je veľkosť súboru párna $(n)$, medián určíme:
 $$
 \text{med}(x) = \frac{x_i + x_{i+1}}{2}, \quad i = \frac{n}{2}
 $$
+
 
 
 ## Modus
@@ -174,4 +127,4 @@ Povedzme, že máme súbor dát:
 - **25. percentil:** ≈ 7.75 *(blízko Q1)*
 - **60. percentil:** ≈ 16.4
 
-    
+

@@ -48,16 +48,14 @@ class AssignmentController extends Controller
      */
     public function getAll()
     {
-        //$this->authorize("viewAny", Assignment::class);
+        $this->authorize("viewAny", Assignment::class);
         $assignments = Assignment::with('hints')->get();
         return response()->json($assignments);
     }
 
     public function create(Request $request)
     {
-        //return reqquest
-        //return $request->all();
-        //$this->authorize("create", User::class);
+        //$this->authorize("adminOrManager");
         $request->validate([
             'subject_id' => 'required|integer',
             'task' => 'required|string',

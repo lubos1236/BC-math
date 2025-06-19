@@ -35,7 +35,7 @@ export default function Result() {
                 </div>
             </div>
 
-            {/* Výpis úloh */}
+
             <div className="mt-6 space-y-6">
                 {assignments.map((assignment, index) => {
                     const isCorrect = checkSolution(assignment, assignment.submittedSolution);

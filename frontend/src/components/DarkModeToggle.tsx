@@ -4,7 +4,6 @@ export default function DarkModeToggle() {
     const [darkMode, setDarkMode] = useState<boolean>(false);
 
     useEffect(() => {
-        // Načítame predvoľby z localStorage pred renderovaním komponentu.
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             setDarkMode(true);

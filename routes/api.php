@@ -37,7 +37,7 @@ Route::group(['middleware' => 'api'], function () {
 
         // Assignments routes
         Route::post('/assignments/create', [AssignmentController::class, 'create']);
-        Route::post('/assignments', [AssignmentController::class, 'getByIds']);
+        //Route::post('/assignments', [AssignmentController::class, 'getByIds']);
         Route::get('/assignments', [AssignmentController::class, 'getAll']);
         Route::post('/assignmentsBySubject', [AssignmentController::class, 'getByThemeIds']);
         Route::delete('/assignments/{id}', [AssignmentController::class, 'delete']);

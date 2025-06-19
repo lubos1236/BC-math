@@ -28,6 +28,6 @@ class Assignment extends Model
     }
     public function themes()
     {
-        return $this->belongsToMany(Theme::class);
+
     }
 }

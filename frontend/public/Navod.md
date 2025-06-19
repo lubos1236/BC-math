@@ -100,3 +100,5 @@ minimálna hodnota je 1
 
 maximálna hodnota je 5
 
+Aplikacia ma aj vstavane funkcie ako mod(), med(), sum(), min(), max(), q1()-qvartil 25, q2()-qvartil 50, q3()-qvartil 75 var()-variacie com()-kombinacie rozptyl
+V zatvorkách sa píšu hodnoty, ktoré sa použijú v týchto funkciách.

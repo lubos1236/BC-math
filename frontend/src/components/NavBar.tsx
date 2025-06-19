@@ -44,7 +44,6 @@ export default function NavBar() {
                     Domov
                 </Link>
 
-                {/* Tlačidlo pre zobrazenie menu na mobiloch */}
                 <button
                     className="md:hidden text-2xl"
                     onClick={() => setIsOpen(!isOpen)}

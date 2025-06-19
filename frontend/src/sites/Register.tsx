@@ -176,9 +176,7 @@ export default function Register() {
                                         focus-visible:shadow-none
                                         "
                                     />
-                                    {/*<div className="flex">*/}
-                                    {/*    <span className="text-red-400 text-sm m-2 p-2">error</span>*/}
-                                    {/*</div>*/}
+
                                 </div>
                                 <div className="mb-10">
                                     <button
